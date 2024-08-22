@@ -43,7 +43,7 @@ void CofficientMatrix::view() {
 Massmatrix::Massmatrix(Mesh2d& mesh)
 	:CofficientMatrix(mesh)
 {	
-	//¿—Ês—ñ‚ğ‹‚ß‚é
+	//ï¿½ï¿½ï¿½Êsï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½
 	for (int ie = 0; ie < mesh_.nelem(); ie++) {
 		for (int i = 0; i < node; i++) {
 			for (int j = 0; j < node; j++) {
@@ -102,7 +102,7 @@ Matrix& Massmatrix::operator[](int ie) {
 Lumped_Massmatrix::Lumped_Massmatrix(Mesh2d& mesh)
 	:CofficientMatrix(mesh)
 {
-	//W’†‰»¿—Ês—ñ‚ğ‹‚ß‚é
+	//ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êsï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½
 	double EM1;
 	double EM2;
 	double EM3;
@@ -129,7 +129,7 @@ Lumped_Massmatrix::Lumped_Massmatrix(Mesh2d& mesh)
 Lumped_Massmatrix::Lumped_Massmatrix(Mesh2d& mesh, const vector<Matrix>& Mat)
 	:CofficientMatrix(mesh, Mat)
 {
-	//W’†‰»¿—Ês—ñ‚ğ‹‚ß‚é
+	//ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êsï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½
 	for (int ie = 0; ie < mesh_.nelem(); ie++) {
 		for (int i = 0; i < node; i++) {
 			for (int k = 0; k < node; k++) {
@@ -170,7 +170,7 @@ Matrix& Lumped_Massmatrix::operator[](int ie) {
 xAdvecmatrix::xAdvecmatrix(Mesh2d& mesh)
 	:CofficientMatrix(mesh)
 {
-	//x•ûŒüˆÚ—¬s—ñs—ñ‚ğ‹‚ß‚é
+	//xï¿½ï¿½ï¿½ï¿½ï¿½Ú—ï¿½ï¿½sï¿½ï¿½sï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½
 	for (int ie = 0; ie < mesh_.nelem(); ie++) {
 		for (int i = 0; i < node; i++) {
 			for (int j = 0; j < node; j++) {
@@ -187,7 +187,7 @@ xAdvecmatrix::xAdvecmatrix(Mesh2d& mesh)
 xAdvecmatrix::xAdvecmatrix(Mesh2d& mesh, const vector<Matrix>& Mat)
 	:CofficientMatrix(mesh, Mat)
 {
-	//x•ûŒüˆÚ—¬s—ñs—ñ‚ğ‹‚ß‚é
+	//xï¿½ï¿½ï¿½ï¿½ï¿½Ú—ï¿½ï¿½sï¿½ï¿½sï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½
 	for (int ie = 0; ie < mesh_.nelem(); ie++) {
 		for (int i = 0; i < node; i++) {
 			for (int j = 0; j < node; j++) {
@@ -221,7 +221,7 @@ Matrix& xAdvecmatrix::operator[](int ie) {
 yAdvecmatrix::yAdvecmatrix(Mesh2d& mesh)
 	:CofficientMatrix(mesh)
 {
-	//y•ûŒüˆÚ—¬s—ñs—ñ‚ğ‹‚ß‚é
+	//yï¿½ï¿½ï¿½ï¿½ï¿½Ú—ï¿½ï¿½sï¿½ï¿½sï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½
 	for (int ie = 0; ie < mesh_.nelem(); ie++) {
 		for (int i = 0; i < node; i++) {
 			for (int j = 0; j < node; j++) {
@@ -238,7 +238,7 @@ yAdvecmatrix::yAdvecmatrix(Mesh2d& mesh)
 yAdvecmatrix::yAdvecmatrix(Mesh2d& mesh, const vector<Matrix>& Mat)
 	:CofficientMatrix(mesh, Mat)
 {	
-	//y•ûŒüˆÚ—¬s—ñs—ñ‚ğ‹‚ß‚é
+	//yï¿½ï¿½ï¿½ï¿½ï¿½Ú—ï¿½ï¿½sï¿½ï¿½sï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½
 	for (int ie = 0; ie < mesh_.nelem(); ie++) {
 		for (int i = 0; i < node; i++) {
 			for (int j = 0; j < node; j++) {
@@ -272,13 +272,13 @@ Matrix& yAdvecmatrix::operator[](int ie) {
 Diffmatrix::Diffmatrix(Mesh2d& mesh)
 	:CofficientMatrix(mesh)
 {
-	//3“_”’lÏ•ª‚É‚æ‚èŠgUs—ñ‚ğ‹‚ß‚é
-	vector<double> xi_gauss = { -sqrt(3.0 / 5.0), 0.0, sqrt(3.0 / 5.0) };//”’lÏ•ª—£U“_xi•ûŒü
-	vector<double> eta_gauss = { -sqrt(3.0 / 5.0), 0.0, sqrt(3.0 / 5.0) };//”’lÏ•ª—£U“_eta•ûŒü
-	vector<double> gauss_W = { 5.0 / 9.0, 8.0 / 9.0, 5.0 / 9.0 };//”’lÏ•ªd‚İ
-	double n_alpha, n_beta, dndxi_alpha, dndxi_beta, dndeta_alpha, dndeta_beta;//Œ`óŠÖ”‚Æ‚»‚Ì”÷•ª
-	double A11, A12, A21, A22;//—]ˆöq—v‘f
-	double Jacobian;//ƒ„ƒRƒrƒAƒ“
+	//3ï¿½_ï¿½ï¿½ï¿½lï¿½Ï•ï¿½ï¿½É‚ï¿½ï¿½gï¿½Uï¿½sï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½
+	vector<double> xi_gauss = { -sqrt(3.0 / 5.0), 0.0, sqrt(3.0 / 5.0) };//ï¿½ï¿½ï¿½lï¿½Ï•ï¿½ï¿½ï¿½ï¿½Uï¿½_xiï¿½ï¿½ï¿½ï¿½
+	vector<double> eta_gauss = { -sqrt(3.0 / 5.0), 0.0, sqrt(3.0 / 5.0) };//ï¿½ï¿½ï¿½lï¿½Ï•ï¿½ï¿½ï¿½ï¿½Uï¿½_etaï¿½ï¿½ï¿½ï¿½
+	vector<double> gauss_W = { 5.0 / 9.0, 8.0 / 9.0, 5.0 / 9.0 };//ï¿½ï¿½ï¿½lï¿½Ï•ï¿½ï¿½dï¿½ï¿½
+	double n_alpha, n_beta, dndxi_alpha, dndxi_beta, dndeta_alpha, dndeta_beta;//ï¿½`ï¿½ï¿½Öï¿½ï¿½Æ‚ï¿½ï¿½Ì”ï¿½ï¿½ï¿½
+	double A11, A12, A21, A22;//ï¿½]ï¿½ï¿½ï¿½qï¿½vï¿½f
+	double Jacobian;//ï¿½ï¿½ï¿½Rï¿½rï¿½Aï¿½ï¿½
 
 	for (int ie = 0; ie < mesh_.nelem(); ie++) {
 		for (int i = 0; i < node; i++) {
@@ -328,13 +328,13 @@ Diffmatrix::Diffmatrix(Mesh2d& mesh)
 Diffmatrix::Diffmatrix(Mesh2d& mesh, const vector<Matrix>& Mat)
 	:CofficientMatrix(mesh, Mat)
 {
-	//3“_”’lÏ•ª‚É‚æ‚èŠgUs—ñ‚ğ‹‚ß‚é
-	vector<double> xi_gauss = { -sqrt(3.0 / 5.0), 0.0, sqrt(3.0 / 5.0) };//”’lÏ•ª—£U“_xi•ûŒü
-	vector<double> eta_gauss = { -sqrt(3.0 / 5.0), 0.0, sqrt(3.0 / 5.0) };//”’lÏ•ª—£U“_eta•ûŒü
-	vector<double> gauss_W = { 5.0 / 9.0, 8.0 / 9.0, 5.0 / 9.0 };//”’lÏ•ªd‚İ
-	double n_alpha, n_beta, dndxi_alpha, dndxi_beta, dndeta_alpha, dndeta_beta;//Œ`óŠÖ”‚Æ‚»‚Ì”÷•ª
-	double A11, A12, A21, A22;//—]ˆöq—v‘f
-	double Jacobian;//ƒ„ƒRƒrƒAƒ“
+	//3ï¿½_ï¿½ï¿½ï¿½lï¿½Ï•ï¿½ï¿½É‚ï¿½ï¿½gï¿½Uï¿½sï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½
+	vector<double> xi_gauss = { -sqrt(3.0 / 5.0), 0.0, sqrt(3.0 / 5.0) };//ï¿½ï¿½ï¿½lï¿½Ï•ï¿½ï¿½ï¿½ï¿½Uï¿½_xiï¿½ï¿½ï¿½ï¿½
+	vector<double> eta_gauss = { -sqrt(3.0 / 5.0), 0.0, sqrt(3.0 / 5.0) };//ï¿½ï¿½ï¿½lï¿½Ï•ï¿½ï¿½ï¿½ï¿½Uï¿½_etaï¿½ï¿½ï¿½ï¿½
+	vector<double> gauss_W = { 5.0 / 9.0, 8.0 / 9.0, 5.0 / 9.0 };//ï¿½ï¿½ï¿½lï¿½Ï•ï¿½ï¿½dï¿½ï¿½
+	double n_alpha, n_beta, dndxi_alpha, dndxi_beta, dndeta_alpha, dndeta_beta;//ï¿½`ï¿½ï¿½Öï¿½ï¿½Æ‚ï¿½ï¿½Ì”ï¿½ï¿½ï¿½
+	double A11, A12, A21, A22;//ï¿½]ï¿½ï¿½ï¿½qï¿½vï¿½f
+	double Jacobian;//ï¿½ï¿½ï¿½Rï¿½rï¿½Aï¿½ï¿½
 
 	for (int ie = 0; ie < mesh_.nelem(); ie++) {
 		for (int i = 0; i < node; i++) {

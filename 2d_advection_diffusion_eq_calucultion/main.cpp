@@ -1,4 +1,4 @@
-/*“ñŽŸŒ³ˆÚ—¬ŠgŽU•û’öŽ®”’l‰ðÍƒ\ƒŠƒ…[ƒVƒ‡ƒ“*/
+/*ï¿½ñŽŸŒï¿½ï¿½Ú—ï¿½ï¿½gï¿½Uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½Íƒ\ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½*/
 #include"param.hpp"
 #include"mesh.hpp"
 #include"value.hpp"

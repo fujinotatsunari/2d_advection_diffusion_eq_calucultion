@@ -19,6 +19,6 @@ private:
 public:
 	Explicit_FEM(Mesh2d& mesh_, Time& t_, PHI& phi_, Boundarycond& BC_, ADeq_param_2d& adp_);
 	void output(int n);
-	void do_expcalculation();//¿—ÊW’†‰»‚ğ—p‚¢‚éŒvZ
+	void do_expcalculation();//ï¿½ï¿½ï¿½ÊWï¿½ï¿½ï¿½ï¿½ï¿½ï¿½pï¿½ï¿½ï¿½ï¿½vï¿½Z
 };
 

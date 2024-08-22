@@ -8,9 +8,9 @@
 /*
 class Jacobian : public ScalarField2d{
 private:
-	int size;////”z—ñ‚Ì‘å‚«‚³nnode‚É‘Î‰
-	vector<double> xi = { -1.0,1.0,1.0,-1.0 };//ŒvZ‹óŠÔÀ•WxiÀ•W
-	vector<double> eta = { -1.0,-1.0,1.0,1.0 };//ŒvZ‹óŠÔÀ•WetaÀ•W
+	int size;////ï¿½zï¿½ï¿½Ì‘å‚«ï¿½ï¿½nnodeï¿½É‘Î‰ï¿½
+	vector<double> xi = { -1.0,1.0,1.0,-1.0 };//ï¿½vï¿½Zï¿½ï¿½Ôï¿½ï¿½Wxiï¿½ï¿½ï¿½W
+	vector<double> eta = { -1.0,-1.0,1.0,1.0 };//ï¿½vï¿½Zï¿½ï¿½Ôï¿½ï¿½Wetaï¿½ï¿½ï¿½W
 
 public:
 	Jacobian(Mesh2d& mesh, Boundarycond& BC);
@@ -18,12 +18,12 @@ public:
 	void calculate_jacobian();
 
 };*/
-class CofficientMatrix {//—v‘f“àŒW”s—ñƒNƒ‰ƒX
+class CofficientMatrix {//ï¿½vï¿½fï¿½ï¿½Wï¿½ï¿½ï¿½sï¿½ï¿½Nï¿½ï¿½ï¿½X
 protected:
-	int node = 4;//—v‘f“àß“_”
-	vector<Matrix> mat;//ƒ}ƒgƒŠƒNƒX–{‘Ì:nelemŒÂ‚Ìvector
-	vector<double> xi = { -1.0,1.0,1.0,-1.0 };//ŒvZ‹óŠÔÀ•WxiÀ•W
-	vector<double> eta = { -1.0,-1.0,1.0,1.0 };//ŒvZ‹óŠÔÀ•WetaÀ•W
+	int node = 4;//ï¿½vï¿½fï¿½ï¿½ß“_ï¿½ï¿½
+	vector<Matrix> mat;//ï¿½}ï¿½gï¿½ï¿½ï¿½Nï¿½Xï¿½{ï¿½ï¿½:nelemï¿½Â‚ï¿½vector
+	vector<double> xi = { -1.0,1.0,1.0,-1.0 };//ï¿½vï¿½Zï¿½ï¿½Ôï¿½ï¿½Wxiï¿½ï¿½ï¿½W
+	vector<double> eta = { -1.0,-1.0,1.0,1.0 };//ï¿½vï¿½Zï¿½ï¿½Ôï¿½ï¿½Wetaï¿½ï¿½ï¿½W
 	Mesh2d& mesh_;
 
 public:
@@ -38,7 +38,7 @@ public:
 };
 
 
-class Massmatrix :public CofficientMatrix {//¿—Ês—ñ
+class Massmatrix :public CofficientMatrix {//ï¿½ï¿½ï¿½Êsï¿½ï¿½
 public:
 	Massmatrix(Mesh2d& mesh);
 	Massmatrix(Mesh2d& mesh, const vector<Matrix>& Mat);
@@ -46,7 +46,7 @@ public:
 	const Matrix& operator[](int ie)const override;
 	Matrix& operator[](int ie) override;
 };
-class Lumped_Massmatrix :public CofficientMatrix {//W’†‰»¿—Ês—ñ
+class Lumped_Massmatrix :public CofficientMatrix {//ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êsï¿½ï¿½
 public:
 	Lumped_Massmatrix(Mesh2d& mesh);
 	Lumped_Massmatrix(Mesh2d& mesh, const vector<Matrix>& Mat);
@@ -55,7 +55,7 @@ public:
 	Matrix& operator[](int ie) override;
 };
   
-class Diffmatrix :public CofficientMatrix {//ŠgUs—ñ
+class Diffmatrix :public CofficientMatrix {//ï¿½gï¿½Uï¿½sï¿½ï¿½
 public:
 	Diffmatrix(Mesh2d& mesh);
 	Diffmatrix(Mesh2d& mesh, const vector<Matrix>& Mat);
@@ -64,7 +64,7 @@ public:
 	Matrix& operator[](int ie) override;
 };
 
-class xAdvecmatrix :public CofficientMatrix{//x•ûŒüˆÚ—¬s—ñƒNƒ‰ƒX(üŒ`)
+class xAdvecmatrix :public CofficientMatrix{//xï¿½ï¿½ï¿½ï¿½ï¿½Ú—ï¿½ï¿½sï¿½ï¿½Nï¿½ï¿½ï¿½X(ï¿½ï¿½ï¿½`)
 public:
 	xAdvecmatrix(Mesh2d& mesh);
 	xAdvecmatrix(Mesh2d& mesh, const vector<Matrix>& Mat);
@@ -72,7 +72,7 @@ public:
 	const Matrix& operator[](int ie)const override;
 	Matrix& operator[](int ie) override;
 };
-class yAdvecmatrix :public CofficientMatrix {//x•ûŒüˆÚ—¬s—ñƒNƒ‰ƒX(üŒ`)
+class yAdvecmatrix :public CofficientMatrix {//xï¿½ï¿½ï¿½ï¿½ï¿½Ú—ï¿½ï¿½sï¿½ï¿½Nï¿½ï¿½ï¿½X(ï¿½ï¿½ï¿½`)
 public:
 	yAdvecmatrix(Mesh2d& mesh);
 	yAdvecmatrix(Mesh2d& mesh, const vector<Matrix>& Mat);

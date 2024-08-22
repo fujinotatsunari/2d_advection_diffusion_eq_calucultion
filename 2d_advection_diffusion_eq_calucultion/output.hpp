@@ -23,15 +23,15 @@ private:
 
 public:
 	Outputdata(Mesh2d& Mesh, Time& T, PHI& phi, ADeq_param_2d& ADP, Boundarycond& BC);
-	void output_result_csv(int N);//ŒvZŒ‹‰Ê
-	//void output_condition();//ŒvZƒpƒ‰ƒ[ƒ^
+	void output_result_csv(int N);//ï¿½vï¿½Zï¿½ï¿½ï¿½ï¿½
+	//void output_condition();//ï¿½vï¿½Zï¿½pï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^
 
 };
 
 string make_directories(string str1, string str2);
-	/*ƒfƒBƒŒƒNƒgƒŠ‚ğì¬‚µ‚½‚¢êŠ‚Ì•¶š—ñ‚ğì‚é
-	eƒfƒBƒŒƒNƒgƒŠ‚Ì–¼‘Ostr1‚ÆqƒfƒBƒŒƒNƒgƒŠ‚Ì–¼‘Ostr2‚ğ
-	Œ‹‡‚µƒfƒBƒŒƒNƒgƒŠstr1/str2‚ğì‚èƒŠƒ^[ƒ“‚·‚é*/
+	/*ï¿½fï¿½Bï¿½ï¿½ï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ì¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½êŠï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	ï¿½eï¿½fï¿½Bï¿½ï¿½ï¿½Nï¿½gï¿½ï¿½ï¿½Ì–ï¿½ï¿½Ostr1ï¿½Æqï¿½fï¿½Bï¿½ï¿½ï¿½Nï¿½gï¿½ï¿½ï¿½Ì–ï¿½ï¿½Ostr2ï¿½ï¿½
+	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½fï¿½Bï¿½ï¿½ï¿½Nï¿½gï¿½ï¿½str1/str2ï¿½ï¿½ï¿½èƒŠï¿½^ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 string directories_setup(int n);
-	/*Œ‹‰Ê‚ğ•Û‘¶‚·‚é‚½‚ß‚ÌƒfƒBƒŒƒNƒgƒŠ‚ğì¬‚·‚é*/
+	/*ï¿½ï¿½ï¿½Ê‚ï¿½Û‘ï¿½ï¿½ï¿½ï¿½é‚½ï¿½ß‚Ìƒfï¿½Bï¿½ï¿½ï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ì¬ï¿½ï¿½ï¿½ï¿½*/
 

@@ -80,16 +80,16 @@ void PHI::setup() {
 	}
 }
 void PHI::initialize_default() {
-	//‰ŠúğŒ‚Ìİ’è
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìİ’ï¿½
 	for (int j = 0; j < mesh_.ynode(); j++) {
 		for (int i = 0; i < mesh_.xnode(); i++) {
 			int np = i + mesh_.xnode() * j;
 
-			if (i == 0) {//¶’[
+			if (i == 0) {//ï¿½ï¿½ï¿½[
 				value[np] = Bcond_.getdL();;
 				scalar_[np].setV(value[np]);
 			}
-			else if (j == 0) {//‰º’[
+			else if (j == 0) {//ï¿½ï¿½ï¿½[
 				value[np] = Bcond_.getdD();
 				scalar_[np].setV(value[np]);
 			}
@@ -100,25 +100,25 @@ void PHI::initialize_default() {
 			cout << "value[" << np << "]=" << value[np] << endl;
 		}
 	}
-	//‹«ŠEğŒ‚Ìİ’è
+	//ï¿½ï¿½ï¿½Eï¿½ï¿½ï¿½ï¿½Ìİ’ï¿½
 	/*
 	for (int j = 0; j < mesh_.ynode(); j++) {
 		for (int i = 0; i < mesh_.xnode(); i++) {
 			int np = i + mesh_.xnode() * j;
-			if (mesh_.ncond(np) == 1) {//dirichlet‹«ŠEğŒ
-				if (i == 0) {//¶•Ç–Ê
+			if (mesh_.ncond(np) == 1) {//dirichletï¿½ï¿½ï¿½Eï¿½ï¿½ï¿½
+				if (i == 0) {//ï¿½ï¿½ï¿½Ç–ï¿½
 					value[np] = Bcond_.getdL();
 					scalar_[np].setV(value[np]);
 				}
-				if (j == 0) {//‰º•Ç–Ê
+				if (j == 0) {//ï¿½ï¿½ï¿½Ç–ï¿½
 					value[np] = Bcond_.getdD();
 					scalar_[np].setV(value[np]);
 				}
-				if (i == mesh_.xnode() - 1) {//‰E•Ç–Ê
+				if (i == mesh_.xnode() - 1) {//ï¿½Eï¿½Ç–ï¿½
 					//value[np] = Bcond_.getdR();
 					//scalar_[np].setV(value[np]);
 				}
-				if (j == mesh_.ynode() - 1) {//ã•Ç–Ê
+				if (j == mesh_.ynode() - 1) {//ï¿½ï¿½Ç–ï¿½
 					//value[np] = Bcond_.getdU();
 					//scalar_[np].setV(value[np]);
 				}
@@ -166,10 +166,10 @@ void ScalarField2d::initialize_default() {
 /*
 void ScalarField2d::initialize_cosfunc() {
 
-	double lx = 0.2 * mesh_.Lx();//cosŠÖ”‚Ì—Ìˆæ
+	double lx = 0.2 * mesh_.Lx();//cosï¿½Öï¿½ï¿½Ì—Ìˆï¿½
 	double ly = 0.2 * mesh_.Ly();
-	double ax = mesh_.Lx() / 2;//—Ìˆæ’†‰›
-	double ay = mesh_.Ly() / 2;//—Ìˆæ’†‰›
+	double ax = mesh_.Lx() / 2;//ï¿½Ìˆæ’†ï¿½ï¿½
+	double ay = mesh_.Ly() / 2;//ï¿½Ìˆæ’†ï¿½ï¿½
 	for (int j = 0; j < mesh_.ynode(); j++) {
 		for (int i = 0; i < mesh_.xnode(); i++) {
 			int np = i + mesh_.xnode() * j;

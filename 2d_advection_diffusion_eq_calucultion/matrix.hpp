@@ -5,9 +5,9 @@
 using namespace std;
 class Matrix {
 private:
-	vector<vector<double>> mat;//s—ñ‚Ì“ñŸŒ³”z—ñ
-	int row;//s
-	int col;//—ñ
+	vector<vector<double>> mat;//ï¿½sï¿½ï¿½Ì“ñŸŒï¿½ï¿½zï¿½ï¿½
+	int row;//ï¿½s
+	int col;//ï¿½ï¿½
 public:
 	//using Index = pair<int, int >;
 	Matrix();

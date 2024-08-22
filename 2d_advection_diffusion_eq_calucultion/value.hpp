@@ -3,11 +3,11 @@
 #include"Mesh.hpp"
 #include<vector>
 
-class Scalar2d {//“ñŸŒ³ƒXƒJƒ‰[—ÊƒNƒ‰ƒX
+class Scalar2d {//ï¿½ñŸŒï¿½ï¿½Xï¿½Jï¿½ï¿½ï¿½[ï¿½ÊƒNï¿½ï¿½ï¿½X
 private:
 	int no_;
-	double x_, y_;//À•W
-	double v_;//ƒXƒJƒ‰[—Ê
+	double x_, y_;//ï¿½ï¿½ï¿½W
+	double v_;//ï¿½Xï¿½Jï¿½ï¿½ï¿½[ï¿½ï¿½
 public:
 	Scalar2d();
 	void setNo(int no);
@@ -20,8 +20,8 @@ public:
 	double getV();
 
 };
-class ScalarField2d {//“ñŸŒ³ƒXƒJƒ‰[êƒNƒ‰ƒX
-	//Mesh2dã‚ÅƒXƒJƒ‰[ê‚ğ’è‚ß‚é.
+class ScalarField2d {//ï¿½ñŸŒï¿½ï¿½Xï¿½Jï¿½ï¿½ï¿½[ï¿½ï¿½Nï¿½ï¿½ï¿½X
+	//Mesh2dï¿½ï¿½ÅƒXï¿½Jï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ß‚ï¿½.
 
 protected:
 	Mesh2d& mesh_;
@@ -34,14 +34,14 @@ public:
 	const double&  operator[](int i)const;
 	double& operator[](int i);
 };
-class PHI :public ScalarField2d {//ˆÚ—¬ŠgU•û’ö®‚Ì•¨——Êphi
+class PHI :public ScalarField2d {//ï¿½Ú—ï¿½ï¿½gï¿½Uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½phi
 private:
-	int size;//va”z—ñ‚Ì‘å‚«‚³nnode‚É‘Î‰
+	int size;//vaï¿½zï¿½ï¿½Ì‘å‚«ï¿½ï¿½nnodeï¿½É‘Î‰ï¿½
 public:
 	PHI(Mesh2d& mesh, Boundarycond& BC);
 	void setup();
-	void initialize_default();//¶’[‚Æ‰º’[‚É1‚ğ—^‚¦‚é
-	//void initialize_deltafunc();//ƒfƒ‹ƒ^ŠÖ”Œ^‚Ì‰ŠúğŒ(
-	//void initialize_cosfunc();//cosŠÖ”Œ^‚Ì‰ŠúğŒ
+	void initialize_default();//ï¿½ï¿½ï¿½[ï¿½Æ‰ï¿½ï¿½[ï¿½ï¿½1ï¿½ï¿½^ï¿½ï¿½ï¿½ï¿½
+	//void initialize_deltafunc();//ï¿½fï¿½ï¿½ï¿½^ï¿½Öï¿½ï¿½^ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(
+	//void initialize_cosfunc();//cosï¿½Öï¿½ï¿½^ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 };

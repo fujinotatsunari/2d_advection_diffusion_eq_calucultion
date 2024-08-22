@@ -158,12 +158,12 @@ void Mesh2d::setup() {
 	yelem_ = nparam_.getYelem();
 	nelem_ = nparam_.getNelem();
 
-	int N = 4;//ˆê—v‘f‚Ìß“_”
+	int N = 4;//ï¿½ï¿½vï¿½fï¿½Ìß“_ï¿½ï¿½
 	nbool1_.resize(nelem_);
 	for (int ie = 0; ie < nbool1_.size(); ie++) {
 		nbool1_[ie].resize(N,0);
 	}
-	int M = 4;//1—v‘f‚É—×Ú‚·‚é—v‘f”
+	int M = 4;//1ï¿½vï¿½fï¿½É—×Ú‚ï¿½ï¿½ï¿½vï¿½fï¿½ï¿½
 	nbool3_.resize(nelem_);
 	for (int ie = 0; ie < nbool3_.size(); ie++) {
 		nbool3_[ie].resize(M, 0);
@@ -174,50 +174,50 @@ void Mesh2d::setup() {
 	elem_.resize(nelem_);
 }
 void Mesh2d::generate_uniform_grid() {
-	//ß“_À•W‚ÌŒvZ
+	//ï¿½ß“_ï¿½ï¿½ï¿½Wï¿½ÌŒvï¿½Z
 	for (int j = 0; j < ynode_; j++) {
 		for (int i = 0; i < xnode_; i++) {
 			int np = i + xnode_ * j;
-			node_[np].setNo(i);//ß“_”Ô†‚Ìİ’è
-			node_[np].setX(dx_ * (double)i + xb_);//ß“_À•Wx‚Ìİ’è
-			node_[np].setY(dy_ * (double)j + yb_);//ß“_À•Wy‚Ìİ’è
+			node_[np].setNo(i);//ï¿½ß“_ï¿½Ôï¿½ï¿½Ìİ’ï¿½
+			node_[np].setX(dx_ * (double)i + xb_);//ï¿½ß“_ï¿½ï¿½ï¿½Wxï¿½Ìİ’ï¿½
+			node_[np].setY(dy_ * (double)j + yb_);//ï¿½ß“_ï¿½ï¿½ï¿½Wyï¿½Ìİ’ï¿½
 
-			if (i == 0) node_[np].setX(xb_);//x¶’[‚Ì•â³
-			if (i == xnode_ - 1) node_[np].setX(xt_);//x‰E’[‚Ì•â³
-			if (j == 0) node_[np].setY(yb_);//y‰º’[‚Ì•â³
-			if (j == ynode_ - 1) node_[np].setY(yt_);//yã’[‚Ì•â³
+			if (i == 0) node_[np].setX(xb_);//xï¿½ï¿½ï¿½[ï¿½Ì•â³
+			if (i == xnode_ - 1) node_[np].setX(xt_);//xï¿½Eï¿½[ï¿½Ì•â³
+			if (j == 0) node_[np].setY(yb_);//yï¿½ï¿½ï¿½[ï¿½Ì•â³
+			if (j == ynode_ - 1) node_[np].setY(yt_);//yï¿½ï¿½[ï¿½Ì•â³
 		}
 	}
-	//nbool1‚Ænbool3‚ÌŠ„“–
+	//nbool1ï¿½ï¿½nbool3ï¿½ÌŠï¿½ï¿½ï¿½
 	for (int j = 0; j < yelem_; j++) {
 		for (int i = 0; i < xelem_; i++) {
 			int ie = i + xelem_ * j;
 
-			int i1 = i + xnode_ * j;//—v‘f‚Ì¶‰º“_‚Ìß“_”Ô†
-			int i2 = i1 + 1;//—v‘f‚Ì‰E‰º“_‚Ìß“_”Ô†
-			int i4 = i1 + xnode_;//—v‘f‚Ì¶ã“_‚Ìß“_”Ô†
-			int i3 = i4 + 1;//—v‘f‚Ì‰Eã“_‚Ìß“_”Ô†
+			int i1 = i + xnode_ * j;//ï¿½vï¿½fï¿½Ìï¿½ï¿½ï¿½ï¿½_ï¿½Ìß“_ï¿½Ôï¿½
+			int i2 = i1 + 1;//ï¿½vï¿½fï¿½Ì‰Eï¿½ï¿½ï¿½_ï¿½Ìß“_ï¿½Ôï¿½
+			int i4 = i1 + xnode_;//ï¿½vï¿½fï¿½Ìï¿½ï¿½ï¿½_ï¿½Ìß“_ï¿½Ôï¿½
+			int i3 = i4 + 1;//ï¿½vï¿½fï¿½Ì‰Eï¿½ï¿½_ï¿½Ìß“_ï¿½Ôï¿½
 
 			nbool1_[ie][0] = i1;
 			nbool1_[ie][1] = i2;
 			nbool1_[ie][2] = i3;
 			nbool1_[ie][3] = i4;
 			
-			nbool3_[ie][2] = ie + xelem_;//ã‘¤—v‘f
-			if (j == yelem_ - 1) nbool3_[ie][2] = -1;//—Ìˆæã’[
+			nbool3_[ie][2] = ie + xelem_;//ï¿½ã‘¤ï¿½vï¿½f
+			if (j == yelem_ - 1) nbool3_[ie][2] = -1;//ï¿½Ìˆï¿½ï¿½[
 
-			nbool3_[ie][0] = ie - xelem_;//‰º‘¤—v‘f
-			if (j == 0) nbool3_[ie][0] = -1;//—Ìˆæ‰º’[
+			nbool3_[ie][0] = ie - xelem_;//ï¿½ï¿½ï¿½ï¿½ï¿½vï¿½f
+			if (j == 0) nbool3_[ie][0] = -1;//ï¿½Ìˆæ‰ºï¿½[
 
-			nbool3_[ie][3] = ie - 1;//¶‘¤—v‘f
-			if (i == 0) nbool3_[ie][3] = -1;//—Ìˆæ¶’[
+			nbool3_[ie][3] = ie - 1;//ï¿½ï¿½ï¿½ï¿½ï¿½vï¿½f
+			if (i == 0) nbool3_[ie][3] = -1;//ï¿½Ìˆæ¶ï¿½[
 
-			nbool3_[ie][1] = ie + 1;//‰E‘¤—v‘f
-			if (i == xelem_ - 1) nbool3_[ie][1] = -1;//—Ìˆæ‰E’[
+			nbool3_[ie][1] = ie + 1;//ï¿½Eï¿½ï¿½ï¿½vï¿½f
+			if (i == xelem_ - 1) nbool3_[ie][1] = -1;//ï¿½Ìˆï¿½Eï¿½[
 		}
 	}
 
-	//—v‘fÀ•W‚Ìİ’è
+	//ï¿½vï¿½fï¿½ï¿½ï¿½Wï¿½Ìİ’ï¿½
 	for (int j = 0; j < yelem_; j++) {
 		for (int i = 0; i < xelem_; i++) {
 			int ie = i + xelem_ * j;
@@ -227,68 +227,68 @@ void Mesh2d::generate_uniform_grid() {
 			int i3 = nbool1_[ie][2];
 			int i4 = nbool1_[ie][3];
 
-			elem_[ie].setX((node_[i1].getX() + node_[i2].getX() + node_[i3].getX() + node_[i4].getX()) / 4);//—v‘fdS‚ÌxÀ•W
-			elem_[ie].setY((node_[i1].getY() + node_[i2].getY() + node_[i3].getY() + node_[i4].getY()) / 4);//—v‘fdS‚ÌyÀ•W
+			elem_[ie].setX((node_[i1].getX() + node_[i2].getX() + node_[i3].getX() + node_[i4].getX()) / 4);//ï¿½vï¿½fï¿½dï¿½Sï¿½ï¿½xï¿½ï¿½ï¿½W
+			elem_[ie].setY((node_[i1].getY() + node_[i2].getY() + node_[i3].getY() + node_[i4].getY()) / 4);//ï¿½vï¿½fï¿½dï¿½Sï¿½ï¿½yï¿½ï¿½ï¿½W
 			double S;
 			S = ((node_[i3].getX() - node_[i1].getX()) * (node_[i4].getY() - node_[i2].getY()) 
-				- (node_[i4].getX() - node_[i2].getX()) * (node_[i3].getY() - node_[i1].getY())) / 4;//—v‘flŠpŒ`‚Ì–ÊÏ‚ğ‹‚ß‚é
+				- (node_[i4].getX() - node_[i2].getX()) * (node_[i3].getY() - node_[i1].getY())) / 4;//ï¿½vï¿½fï¿½lï¿½pï¿½`ï¿½Ì–ÊÏ‚ï¿½ï¿½ï¿½ß‚ï¿½
 
 			elem_[ie].setSe(S);
 
 		}
 	}
 
-	//‹«ŠEğŒƒtƒ‰ƒO‚Ìİ’è
-	//ncond:  0:“à•”,1:—¬“ü‹«ŠEğŒ,2:—¬o‹«ŠEğŒ
+	//ï¿½ï¿½ï¿½Eï¿½ï¿½ï¿½ï¿½tï¿½ï¿½ï¿½Oï¿½Ìİ’ï¿½
+	//ncond:  0:ï¿½ï¿½ï¿½,1:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Eï¿½ï¿½ï¿½,2:ï¿½ï¿½ï¿½oï¿½ï¿½ï¿½Eï¿½ï¿½ï¿½
 	for (int j = 0; j < ynode_; j++) {
 		for (int i = 0; i < xnode_; i++) {
 			int np = i + xnode_ * j;
-			if (i == 0) {//¶•Ç–Ê
-				if (Bcond_.getBCflagL() == 0) {//—¬“ü‹«ŠEğŒ
+			if (i == 0) {//ï¿½ï¿½ï¿½Ç–ï¿½
+				if (Bcond_.getBCflagL() == 0) {//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Eï¿½ï¿½ï¿½
 					ncond_[np] = 1;
 
 				}
-				else if (Bcond_.getBCflagL() == 1) {//—¬o‹«ŠEğŒ
+				else if (Bcond_.getBCflagL() == 1) {//ï¿½ï¿½ï¿½oï¿½ï¿½ï¿½Eï¿½ï¿½ï¿½
 					ncond_[np] = 2;
 				}
 				else {
 
 				}
 			}
-			else if (j == 0) {//‰º•Ç–Ê
-				if (Bcond_.getBCflagD() == 0) {//—¬“ü‹«ŠEğŒ
+			else if (j == 0) {//ï¿½ï¿½ï¿½Ç–ï¿½
+				if (Bcond_.getBCflagD() == 0) {//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Eï¿½ï¿½ï¿½
 					ncond_[np] = 1;
 				}
-				else if (Bcond_.getBCflagD() == 1) {//—¬o‹«ŠEğŒ
+				else if (Bcond_.getBCflagD() == 1) {//ï¿½ï¿½ï¿½oï¿½ï¿½ï¿½Eï¿½ï¿½ï¿½
 					ncond_[np] = 2;
 				}
 				else {
 
 				}
 			}
-			else if (i == xnode_ - 1) {//‰E•Ç–Ê
-				if (Bcond_.getBCflagR() == 0) {//—¬“ü‹«ŠEğŒ
+			else if (i == xnode_ - 1) {//ï¿½Eï¿½Ç–ï¿½
+				if (Bcond_.getBCflagR() == 0) {//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Eï¿½ï¿½ï¿½
 					ncond_[np] = 1;
 				}
-				else if (Bcond_.getBCflagR() == 1) {//—¬o‹«ŠEğŒ
+				else if (Bcond_.getBCflagR() == 1) {//ï¿½ï¿½ï¿½oï¿½ï¿½ï¿½Eï¿½ï¿½ï¿½
 					ncond_[np] = 2;
 				}
 				else {
 
 				}
 			}
-			else if (j == ynode_ - 1) {//ã•Ç–Ê
-				if (Bcond_.getBCflagU() == 0) {//—¬“ü‹«ŠEğŒ
+			else if (j == ynode_ - 1) {//ï¿½ï¿½Ç–ï¿½
+				if (Bcond_.getBCflagU() == 0) {//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Eï¿½ï¿½ï¿½
 					ncond_[np] = 1;
 				}
-				else if (Bcond_.getBCflagU() == 1) {//—¬o‹«ŠEğŒ
+				else if (Bcond_.getBCflagU() == 1) {//ï¿½ï¿½ï¿½oï¿½ï¿½ï¿½Eï¿½ï¿½ï¿½
 					ncond_[np] = 2;
 				}
 				else {
 
 				}
 			}
-			else {//‚»‚êˆÈŠO‚Ì—Ìˆæ
+			else {//ï¿½ï¿½ï¿½ï¿½ÈŠOï¿½Ì—Ìˆï¿½
 				ncond_[np] = 0;
 			}
 		}
