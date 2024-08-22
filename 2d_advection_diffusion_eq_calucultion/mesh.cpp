@@ -5,6 +5,7 @@
 Node2d::Node2d() :no(0), x(0), y(0)
 {
 
+
 }
 void Node2d::setNo(int no_) {
 	no = no_;

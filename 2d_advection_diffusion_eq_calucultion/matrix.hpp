@@ -6,8 +6,8 @@ using namespace std;
 class Matrix {
 private:
 	vector<vector<double>> mat;
-	int row;//�s
-	int col;//��
+	int row;
+	int col;
 public:
 	//using Index = pair<int, int >;
 	Matrix();

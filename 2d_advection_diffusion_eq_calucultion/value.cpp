@@ -10,6 +10,7 @@ Scalar2d::Scalar2d()
 	:no_(0),x_(0),y_(0),v_(0) 
 {
 
+
 }
 
 void Scalar2d::setNo(int no) {

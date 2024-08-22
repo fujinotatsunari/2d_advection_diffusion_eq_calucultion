@@ -21,6 +21,7 @@ public:
 	void do_expcalculation();//質量集中化を用いる計算
 };
 
+
 class Implicit_FEM {//陰解法
 private:
 	Mesh2d& mesh;

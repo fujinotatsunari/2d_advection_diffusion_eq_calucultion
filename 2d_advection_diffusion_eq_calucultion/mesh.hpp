@@ -38,6 +38,7 @@ public:
 };
 
 
+
 class Time {//時間軸
 private:
 	double ntime_;//nステップでの時刻

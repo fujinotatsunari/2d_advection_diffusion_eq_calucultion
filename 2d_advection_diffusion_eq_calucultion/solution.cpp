@@ -240,6 +240,7 @@ void Implicit_FEM::do_impcaluculation() {
 
 	}
 
+
 }
 void Implicit_FEM::output(int n) {
 	if (n % t.nsample() == 0) {

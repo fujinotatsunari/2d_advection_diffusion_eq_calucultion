@@ -3,7 +3,7 @@
 #include<vector>
 using namespace std;
 
-class NodeP {//�v�Z�i�q�p�����[�^�N���X
+class NodeP {
 private:
 	double Lx, Ly;
 	double xb, yb;
@@ -71,42 +71,7 @@ public:
 	void setdU(double dU_);
 	void setdD(double dD_);
 };
-/*
-class Constparam {//�萔�p�����[�^�N���X
-protected:
-	NodeP nparam;
-public:
-	Constparam();
-	Constparam(NodeP& Np);
-};
-*/
-/*
-class NSeq_param2d :public Constparam {//Navier-Stokes�������p�����[�^(���x�E�S��������ԂɈˑ����Ȃ�(�ړ����E�Ȃ��@)
-private:
-	double Crho;//���x
-	double Cmu;//�S��
-	double Cnu;//���S��
-	int type;//���̂̎��
-public:
-	NSeq_param2d();
-	//NSeq_param2d(NodeP& Np, TimeP& Tp);
-	NSeq_param2d(NodeP& Np);
-	void setParam();
-	void setType();
-	double getCrho();
-	double getCmu();
-	double getCmu();
-};
-class NDNSeq_param2d :public Constparam {//��������Navier-Stokes�������p�����[�^
-private:
-	double Re;
-public:
-	NDNSeq_param2d();
-	//NDNSeq_param2d(NodeP& Np, TimeP& Tp);
-	NDNSeq_param2d(NodeP& Np);
-	void setParam();
-	double getRe();
-};*/
+
 
 
 class ADeq_param_2d {//一次元移流拡散方程式パラメータクラス

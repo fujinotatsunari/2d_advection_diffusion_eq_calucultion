@@ -6,6 +6,7 @@ Matrix::Matrix()
 	:row(0),col(0),mat(NULL)
 {
 
+
 }
 Matrix::Matrix(int row_, int col_, const vector<vector<double>>& mat_)
 	:row(row_), col(col_) 

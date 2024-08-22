@@ -5,19 +5,8 @@
 #include"matrix.hpp"
 #include<vector>
 
-/*
-class Jacobian : public ScalarField2d{
-private:
-	int size;////配列の大きさnnodeに対応
-	vector<double> xi = { -1.0,1.0,1.0,-1.0 };//計算空間座標xi座標
-	vector<double> eta = { -1.0,-1.0,1.0,1.0 };//計算空間座標eta座標
 
-public:
-	Jacobian(Mesh2d& mesh, Boundarycond& BC);
-	void setup();
-	void calculate_jacobian();
 
-};*/
 class CofficientMatrix {//要素内係数行列クラス
 protected:
 	int node = 4;//要素内節点数

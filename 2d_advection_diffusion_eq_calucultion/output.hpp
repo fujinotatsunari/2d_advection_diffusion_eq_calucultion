@@ -36,5 +36,6 @@ string make_directories(string str1, string str2);
 結合しディレクトリstr1/str2を作りリターンする*/
 
 
+
 string directories_setup(int n, int scheme);
 /*結果を保存するためのディレクトリを作成する*/

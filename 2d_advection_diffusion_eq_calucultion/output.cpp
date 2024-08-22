@@ -10,6 +10,7 @@ using namespace std;
 Outputdata::Outputdata(Mesh2d& Mesh, Time& T, PHI& Phi, ADeq_param_2d& ADP, Boundarycond& bc, int Scheme) 
 	:n(0),mesh(Mesh),t(T),phi(Phi),adp(ADP),BC(bc),scheme(Scheme)
 {
+
 	
 	x.resize(mesh.xnode());
 	y.resize(mesh.ynode());

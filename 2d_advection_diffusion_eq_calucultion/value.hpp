@@ -20,6 +20,7 @@ public:
 	double getV();
 
 };
+
 class ScalarField2d {//二次元スカラー場クラス
 	//Mesh2d上でスカラー場を定める.
 
