@@ -35,7 +35,7 @@ Outputdata::Outputdata(Mesh2d& Mesh, Time& T, PHI& Phi, ADeq_param_2d& ADP, Boun
 void Outputdata::output_result_csv(int N) {
 	n = N;
 	string str;
-	string str1;//makedirectories�ŋA���Ă���p�X
+	string str1;//makedirectoriesで帰ってくるパス
 	string str2;
 	string str3;
 
@@ -60,18 +60,20 @@ void Outputdata::output_result_csv(int N) {
 	outputfile.close();
 }
 string make_directories(string str1, string str2) {
-
+	/*ディレクトリを作成したい場所の文字列を作る
+	親ディレクトリの名前str1と子ディレクトリの名前str2を
+	結合しディレクトリstr1/str2を作りリターンする*/
 	string str;
 	str = str1 + "/" + str2;
 	struct stat statBuf;
 	if (stat(str.c_str(), &statBuf) != 0) {
 		if (_mkdir(str.c_str()) == 0) {
-			// ����
+			//成功
 			cout << str << "���쐬����܂���" << endl;
 			return str;
 		}
 		else {
-			// ���s
+			// 失敗
 			cout << str << "�̍쐬�Ɏ��s���܂���" << endl;
 			exit(-1);
 		}
@@ -114,50 +116,49 @@ string directories_setup(int n) {
 
 	int check = 0;
 
-	if (n == 0) {//���ԃX�e�b�v��0(����Ăяo����)
+	if (n == 0) {//時間ステップが0(初回呼び出し時)
 		for (int i = 0; check == 0; i++) {
 			str1 = str + "/" + "data" + to_string(i);//C:/../data_i
 			if (stat(str1.c_str(), &statBuf) != 0) {
-				//C:/../data_i�����񂴂����Ȃ��Ƃ�
-				str1 = "data" + to_string(i);//���݂��Ȃ��̂ł���
+				//C:/../data_iがそんざいしないとき
+				str1 = "data" + to_string(i);//存在しないのでつくる
 				str = make_directories(str, str1);
 				check = 1;
 				return str;//C:/../data_i
 			}
 			else {
-				//C:/../data_i�����񂴂�����Ƃ�
+				//C:/../data_iがそんざいするとき
 			}
 		}
 	}
-	else {//���ԃX�e�b�v��0����Ȃ�(����ł͂Ȃ�)
+	else {//時間ステップが0じゃない(初回ではない)
 		for (int i = 0; check == 0; i++) {
 			str1 = str + "/" + "data" + to_string(i);//C:/../data_i
 			if (stat(str1.c_str(), &statBuf) != 0) {
-				//C:/../data_i�����񂴂����Ȃ��Ƃ�
+				//C:/../data_iがそんざいしないとき
 				str1 = "data" + to_string(i);
 				str = make_directories(str, str1);
 				check = 1;
 				return str;
 			}
 			else {
-				//str1�����񂴂�����Ƃ�
+				//str1がそんざいするとき
 				int j = i + 1;
 				str1 = str + "/" + "data" + to_string(j);//C:/../data_(i+1)
 				if (stat(str1.c_str(), &statBuf) != 0) {
-					//data(i+1)�����݂��Ȃ�<=>datai���Ō�<=>datai�֕ۑ�
+					//data(i+1)が存在しない<=>dataiが最後<=>dataiへ保存
 					str1 = "data" + to_string(i);
 					str = make_directories(str, str1);
 					check = 1;
 					return str;
 				}
 				else {
-					//data(i+1)������
+					//data(i+1)が存在
 				}
 			}
 
 		}
 	}
-
 
 }
 string directories_setup(int n, int scheme) {
@@ -165,16 +166,16 @@ string directories_setup(int n, int scheme) {
 	string dirname1 = "Result";
 	string dirname2 = "2d_advection_diffusion_eq_calculation";
 	string dirname3;
-	if (scheme == 0) {//�z��@�̂Ƃ�
+	if (scheme == 0) {//陽解法
 		dirname3 = "FEM_explicit";
 	}
-	else if (scheme == 1) {//�A��@�̂Ƃ�
+	else if (scheme == 1) {//陰解法
 		dirname3 = "FEM_implicit";
 	}
 	
 	string dirname4 = "result";
-	string str;//makedirectories�ŋA���Ă���p�X
-	string str1;//str�̃p�X�ɒǉ��������f�B���N�g��
+	string str;
+	string str1;
 
 	string year;
 	string month;
@@ -197,44 +198,44 @@ string directories_setup(int n, int scheme) {
 
 	int check = 0;
 
-	if (n == 0) {//���ԃX�e�b�v��0(����Ăяo����)
+	if (n == 0) {//時間ステップが0(初回呼び出し時)
 		for (int i = 0; check == 0; i++) {
 			str1 = str + "/" + "data" + to_string(i);//C:/../data_i
 			if (stat(str1.c_str(), &statBuf) != 0) {
-				//C:/../data_i�����񂴂����Ȃ��Ƃ�
-				str1 = "data" + to_string(i);//���݂��Ȃ��̂ł���
+				//C:/../data_iがそんざいしないとき
+				str1 = "data" + to_string(i);//存在しないのでつくる
 				str = make_directories(str, str1);
 				check = 1;
 				return str;//C:/../data_i
 			}
 			else {
-				//C:/../data_i�����񂴂�����Ƃ�
+				//C:/../data_iがそんざいするとき
 			}
 		}
 	}
-	else {//���ԃX�e�b�v��0����Ȃ�(����ł͂Ȃ�)
+	else {//時間ステップが0じゃない(初回ではない)
 		for (int i = 0; check == 0; i++) {
 			str1 = str + "/" + "data" + to_string(i);//C:/../data_i
 			if (stat(str1.c_str(), &statBuf) != 0) {
-				//C:/../data_i�����񂴂����Ȃ��Ƃ�
+				//C:/../data_iがそんざいしないとき
 				str1 = "data" + to_string(i);
 				str = make_directories(str, str1);
 				check = 1;
 				return str;
 			}
 			else {
-				//str1�����񂴂�����Ƃ�
+				//str1がそんざいするとき
 				int j = i + 1;
 				str1 = str + "/" + "data" + to_string(j);//C:/../data_(i+1)
 				if (stat(str1.c_str(), &statBuf) != 0) {
-					//data(i+1)�����݂��Ȃ�<=>datai���Ō�<=>datai�֕ۑ�
+					//data(i+1)が存在しない<=>dataiが最後<=>dataiへ保存
 					str1 = "data" + to_string(i);
 					str = make_directories(str, str1);
 					check = 1;
 					return str;
 				}
 				else {
-					//data(i+1)������
+					//data(i+1)が存在
 				}
 			}
 
