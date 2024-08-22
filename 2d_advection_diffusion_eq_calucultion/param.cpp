@@ -66,7 +66,7 @@ void NodeP::setNodeParam() {
 	ynode = yelem + 1;
 	nnode = xnode * ynode;
 	nelem = xelem * yelem;
-	cout << "all nodes> " << nnode << "all elements->" << nelem << endl;
+	cout << "all nodes> 　" << nnode << "　all elements->" << nelem << endl;
 	dx = Lx / (double)xelem;
 	dy = Ly / (double)yelem;
 	cout << "dx=" << dx << endl;
