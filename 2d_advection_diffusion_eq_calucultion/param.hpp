@@ -3,7 +3,7 @@
 #include<vector>
 using namespace std;
 
-class NodeP {//ŒvZŠiqƒpƒ‰ƒ[ƒ^ƒNƒ‰ƒX
+class NodeP {//ï¿½vï¿½Zï¿½iï¿½qï¿½pï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½Nï¿½ï¿½ï¿½X
 private:
 	double Lx, Ly;
 	double xb, yb;
@@ -35,7 +35,7 @@ public:
 	int getNelem();
 };
 
-class TimeP {//ŠÔ²ƒpƒ‰ƒ[ƒ^ƒNƒ‰ƒX
+class TimeP {//æ™‚é–“è»¸ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚¯ãƒ©ã‚¹
 private:
 	double dt;
 	int nend;
@@ -50,11 +50,11 @@ public:
 	int getNsample();
 	void setTparam();
 };
-class Boundarycond {//‹«ŠEğŒƒNƒ‰ƒX
+class Boundarycond {//å¢ƒç•Œæ¡ä»¶ã‚¯ãƒ©ã‚¹
 private:
 	int flagL, flagR, flagU, flagD;
-	double dL, dR, dU, dD;//—¬“ü‹«ŠEğŒ’l
-	//0:—¬“ü‹«ŠE(diriclet),1:—¬o‹«ŠE(neumann dv/dx=0)
+	double dL, dR, dU, dD;//æµå…¥å¢ƒç•Œæ¡ä»¶å€¤
+	//0:æµå…¥å¢ƒç•Œ(diriclet),1:æµå‡ºå¢ƒç•Œ(neumann dv/dx=0)
 public:
 	Boundarycond();
 	void set_BC();
@@ -72,7 +72,7 @@ public:
 	void setdD(double dD_);
 };
 /*
-class Constparam {//’è”ƒpƒ‰ƒ[ƒ^ƒNƒ‰ƒX
+class Constparam {//ï¿½è”ï¿½pï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½Nï¿½ï¿½ï¿½X
 protected:
 	NodeP nparam;
 public:
@@ -81,12 +81,12 @@ public:
 };
 */
 /*
-class NSeq_param2d :public Constparam {//Navier-Stokes•û’ö®ƒpƒ‰ƒ[ƒ^(–§“xE”S«‚ª‹óŠÔ‚ÉˆË‘¶‚µ‚È‚¢(ˆÚ“®‹«ŠE‚È‚µ@)
+class NSeq_param2d :public Constparam {//Navier-Stokesï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½pï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^(ï¿½ï¿½ï¿½xï¿½Eï¿½Sï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô‚ÉˆË‘ï¿½ï¿½ï¿½ï¿½È‚ï¿½(ï¿½Ú“ï¿½ï¿½ï¿½ï¿½Eï¿½È‚ï¿½ï¿½@)
 private:
-	double Crho;//–§“x
-	double Cmu;//”S«
-	double Cnu;//“®”S«
-	int type;//—¬‘Ì‚Ìí—Ş
+	double Crho;//ï¿½ï¿½ï¿½x
+	double Cmu;//ï¿½Sï¿½ï¿½
+	double Cnu;//ï¿½ï¿½ï¿½Sï¿½ï¿½
+	int type;//ï¿½ï¿½ï¿½Ì‚Ìï¿½ï¿½
 public:
 	NSeq_param2d();
 	//NSeq_param2d(NodeP& Np, TimeP& Tp);
@@ -97,7 +97,7 @@ public:
 	double getCmu();
 	double getCmu();
 };
-class NDNSeq_param2d :public Constparam {//–³ŸŒ³‰»Navier-Stokes•û’ö®ƒpƒ‰ƒ[ƒ^
+class NDNSeq_param2d :public Constparam {//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Navier-Stokesï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½pï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^
 private:
 	double Re;
 public:
@@ -108,15 +108,16 @@ public:
 	double getRe();
 };*/
 
-class ADeq_param_2d  {//ˆêŸŒ³ˆÚ—¬ŠgU•û’ö®ƒpƒ‰ƒ[ƒ^ƒNƒ‰ƒX
+
+class ADeq_param_2d {//ä¸€æ¬¡å…ƒç§»æµæ‹¡æ•£æ–¹ç¨‹å¼ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚¯ãƒ©ã‚¹
 private:
-	double cx;//’èí—¬‘¬x¬•ª
-	double cy;//’èí—¬‘¬x¬•ª
-	double alpha;//ŠgUŒW”
-	double courantx;//ƒN[ƒ‰ƒ“”x•ûŒü
-	double couranty;//ƒN[ƒ‰ƒ“”y•ûŒü
-	double diffusion;//ŠgU”
-	double Pe;//ƒyƒNƒŒ”
+	double cx;//å®šå¸¸æµé€Ÿxæˆåˆ†
+	double cy;//å®šå¸¸æµé€Ÿxæˆåˆ†
+	double alpha;//æ‹¡æ•£ä¿‚æ•°
+	double courantx;//ã‚¯ãƒ¼ãƒ©ãƒ³æ•°xæ–¹å‘
+	double couranty;//ã‚¯ãƒ¼ãƒ©ãƒ³æ•°yæ–¹å‘
+	double diffusion;//æ‹¡æ•£æ•°
+	double Pe;//ãƒšã‚¯ãƒ¬æ•°
 	NodeP& nparam;
 	TimeP& tparam;
 public:

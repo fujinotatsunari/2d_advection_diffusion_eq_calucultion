@@ -83,6 +83,22 @@ void Matrix::print() const{
 		cout << endl;
 	}
 }
+void Matrix::clean() {
+	for (int i = 0; i < row; i++) {
+		for (int j = 0; j < col; j++) {
+			mat[i][j] = 0.0;
+		}
+	}
+}
+void Matrix::generate(int row_, int col_) {
+	row = row_;
+	col = col_;
+	mat.resize(row);
+	for (int i = 0; i < mat.size(); i++) {
+		mat[i].resize(col);
+	}
+	clean();
+}
 /*
 Matrix operator+(const Matrix& A, const Matrix& B) {
 	int n_row = A.row_();
@@ -130,42 +146,42 @@ void LU_solve(Matrix& A, vector<double>& x, vector<double>& b) {
 	   | |5       |  6   7   8   9         |
 	   | |(=L1->) |              =(A1)     |*/
 
-	cout << "===========  in LU_solve  ==============" << endl;
-	int n_r = (int)A.row_();//A‚Ìs
-	int n_c = (int)A.col_();//A‚Ì—ñ
-	int m_r = (int)b.size();//b‚Ìs
-	int m_c = 1;//b‚Ì—ñ=1
+	//cout << "===========  in LU_solve  ==============" << endl;
+	int n_r = (int)A.row_();//Aã®è¡Œ
+	int n_c = (int)A.col_();//Aã®åˆ—
+	int m_r = (int)b.size();//bã®è¡Œ
+	int m_c = 1;//bã®åˆ—=1
 	//auto Amat_= Matrix::new_zero_matrix(n_r, n_c);
 	auto L = Matrix::new_zero_matrix(n_r, n_c);
 	auto U = Matrix::new_zero_matrix(n_r, n_c);
 	auto LU = Matrix::new_zero_matrix(n_r, n_c);
-	
-	//A = A;//ˆø”‚ÌA‚ğ•Û‘¶
+
+	//A = A;//å¼•æ•°ã®Aã‚’ä¿å­˜
 	for (int i = 0; i < n_r; i++) {
 		int n = n_r - i - 1;
 
 		L[i][i] = A[0][0];
-		double L0 = L[i][i];//L_00¬•ª‚ğƒRƒs[
+		double L0 = L[i][i];//L_00æˆåˆ†ã‚’ã‚³ãƒ”ãƒ¼
 
-		//L1¬•ª‚ğƒRƒs[
+		//L1æˆåˆ†ã‚’ã‚³ãƒ”ãƒ¼
 		vector<double> L1(n);
 		for (int j = 0; j < n; j++) {
 			L1[j] = A[j + 1][0];
 			L[j + i + 1][i] = L1[j];
 		}
-		//U1¬•ª‚ğƒRƒs[
+		//U1æˆåˆ†ã‚’ã‚³ãƒ”ãƒ¼
 		vector<double> U1(n);
 		for (int j = 0; j < n; j++) {
 			U1[j] = A[0][j + 1] / L0;
 			U[i][j + i + 1] = U1[j];
 		}
-		//LU‚ğ‹‚ß‚é
+		//LUã‚’æ±‚ã‚ã‚‹
 		for (int j = 0; j < n; j++) {
 			for (int k = 0; k < n; k++) {
 				LU[j][k] = L1[j] * U1[k];
 			}
 		}
-		//A1‚ğ‹‚ß‚é(n-1Ÿs—ñ)
+		//A1ã‚’æ±‚ã‚ã‚‹(n-1æ¬¡è¡Œåˆ—)
 		vector<vector<double>> A1_;
 		Matrix A1(n, n, A1_);
 		for (int j = 0; j < n; j++) {
@@ -173,12 +189,15 @@ void LU_solve(Matrix& A, vector<double>& x, vector<double>& b) {
 				A1[j][k] = A[j + 1][k + 1] - LU[j][k];
 			}
 		}
-		//A1‚ğA‚Æ‚µ‚ÄÄ‹A“I‚É‰ğ‚­
+		//A1ã‚’Aã¨ã—ã¦å†å¸°çš„ã«è§£ã
 		A = A1;
+		/*
 		cout << "A_" << n << "matrix" << endl;
 		A.print();
 		cout << endl;
+		*/
 	}
+	/*
 	cout << "L_matrix" << endl;
 	L.print();
 	cout << endl;
@@ -190,9 +209,9 @@ void LU_solve(Matrix& A, vector<double>& x, vector<double>& b) {
 	cout << "LU_matrix" << endl;
 	LU.print();
 	cout << endl;
+	*/
 
-
-	//‹‚ß‚½LUs—ñ‚Å˜A—§•û’ö®‚ğ‰ğ‚­
+	//æ±‚ã‚ãŸLUè¡Œåˆ—ã§é€£ç«‹æ–¹ç¨‹å¼ã‚’è§£ã
 
 	vector<double> y(n_r);
 	for (int i = 0; i < n_r; i++) {
@@ -211,7 +230,7 @@ void LU_solve(Matrix& A, vector<double>& x, vector<double>& b) {
 		x_[i] = y[i] - sum;
 	}
 	x = x_;
-	cout << "LU_solve_end" << endl;
+	//cout << "LU_solve_end" << endl;
 
 }
 void LU_solve(vector<vector<double>>& Amat, vector<double>& x, vector<double> b) {
@@ -225,11 +244,11 @@ void LU_solve(vector<vector<double>>& Amat, vector<double>& x, vector<double> b)
 	   | |(=L1->) |              =(A1)     |*/
 
 
-	int n_r = (int)Amat.size();//A‚Ìs
-	int n_c = (int)Amat[0].size();//A‚Ì—ñ
-	int m_r = (int)b.size();//b‚Ìs
-	int m_c = 1;//b‚Ì—ñ=1
-	auto A_ = Matrix::new_zero_matrix(n_r, n_c);
+	int n_r = (int)Amat.size();//Aã®è¡Œ
+	int n_c = (int)Amat[0].size();//Aã®åˆ—
+	int m_r = (int)b.size();//bã®è¡Œ
+	int m_c = 1;//bã®åˆ—=1
+	Matrix A_(n_r, n_c, Amat);
 	auto L = Matrix::new_zero_matrix(n_r, n_c);
 	auto U = Matrix::new_zero_matrix(n_r, n_c);
 	auto LU = Matrix::new_zero_matrix(n_r, n_c);
@@ -239,27 +258,27 @@ void LU_solve(vector<vector<double>>& Amat, vector<double>& x, vector<double> b)
 		int n = n_r - i - 1;
 
 		L[i][i] = A_[0][0];
-		double L0 = L[i][i];//L_00¬•ª‚ğƒRƒs[
+		double L0 = L[i][i];//L_00æˆåˆ†ã‚’ã‚³ãƒ”ãƒ¼
 
-		//L1¬•ª‚ğƒRƒs[
+		//L1æˆåˆ†ã‚’ã‚³ãƒ”ãƒ¼
 		vector<double> L1(n);
 		for (int j = 0; j < n; j++) {
 			L1[j] = A_[j + 1][0];
 			L[j + i + 1][i] = L1[j];
 		}
-		//U1¬•ª‚ğƒRƒs[
+		//U1æˆåˆ†ã‚’ã‚³ãƒ”ãƒ¼
 		vector<double> U1(n);
 		for (int j = 0; j < n; j++) {
 			U1[j] = A_[0][j + 1] / L0;
 			U[i][j + i + 1] = U1[j];
 		}
-		//LU‚ğ‹‚ß‚é
+		//LUã‚’æ±‚ã‚ã‚‹
 		for (int j = 0; j < n; j++) {
 			for (int k = 0; k < n; k++) {
 				LU[j][k] = L1[j] * U1[k];
 			}
 		}
-		//A1‚ğ‹‚ß‚é(n-1Ÿs—ñ)
+		//A1ã‚’æ±‚ã‚ã‚‹(n-1æ¬¡è¡Œåˆ—)
 		vector<vector<double>> A1_;
 		Matrix A1(n, n, A1_);
 		for (int j = 0; j < n; j++) {
@@ -267,11 +286,11 @@ void LU_solve(vector<vector<double>>& Amat, vector<double>& x, vector<double> b)
 				A1[j][k] = A_[j + 1][k + 1] - LU[j][k];
 			}
 		}
-		//A1‚ğA‚Æ‚µ‚ÄÄ‹A“I‚É‰ğ‚­
+		//A1ã‚’Aã¨ã—ã¦å†å¸°çš„ã«è§£ã
 		A_ = A1;
 	}
 
-	//‹‚ß‚½LUs—ñ‚Å˜A—§•û’ö®‚ğ‰ğ‚­
+	//æ±‚ã‚ãŸLUè¡Œåˆ—ã§é€£ç«‹æ–¹ç¨‹å¼ã‚’è§£ã
 
 	vector<double> y(n_r);
 	for (int i = 0; i < n_r; i++) {

@@ -46,31 +46,31 @@ NodeP& NodeP::operator=(const NodeP& Np) {
 	return *this;
 }
 void NodeP::setNodeParam() {
-	//cout << "#2ŽŸŒ³ƒLƒƒƒrƒeƒB—¬‚ê‰ðÍ" << endl;
-	cout << "x•ûŒü¶’[ xb->";
+	
+	cout << "X-axis bottom: xb->";
 	cin >> xb;
-	cout << "x•ûŒü‰E’[ xt->";
+	cout << "X-axis top: xt->";
 	cin >> xt;
-	cout << "y•ûŒü¶’[ yb->";
+	cout << "Y-axis bottom: yb->";
 	cin >> yb;
-	cout << "x•ûŒü‰E’[ yt->";
+	cout << "Y-axis top: yt->";
 	cin >> yt;
 	Lx = xt - xb;
 	Ly = yt - yb;
 
-	cout << "x•ûŒü‚Ì—v‘f” xelement ->";
+	cout << "xelement ->";
 	cin >> xelem;
-	cout << "y•ûŒü‚Ì—v‘f” yelement ->";
+	cout << "yelement ->";
 	cin >> yelem;
 	xnode = xelem + 1;
 	ynode = yelem + 1;
 	nnode = xnode * ynode;
 	nelem = xelem * yelem;
-	cout << "‘ß“_”-> " << nnode << "‘—v‘f”->" << nelem << endl;
+	cout << "all nodes> " << nnode << "all elements->" << nelem << endl;
 	dx = Lx / (double)xelem;
 	dy = Ly / (double)yelem;
-	cout << "x•ûŒü‹óŠÔ‚Ý•dx=" << dx << endl;
-	cout << "y•ûŒü‹óŠÔ‚Ý•dy=" << dy << endl;
+	cout << "dx=" << dx << endl;
+	cout << "dy=" << dy << endl;
 }
 double NodeP::getLx() {
 	return Lx;
@@ -133,11 +133,11 @@ TimeP& TimeP::operator=(const TimeP& Tp) {
 	return *this;
 }
 void TimeP::setTparam() {
-	cout << "ŽžŠÔ‚Ý•‚ð“ü—Í‚µ‚Ä‚­‚¾‚³‚¢ dt->";
+	cout << "dt->";
 	cin >> dt;
-	cout << "‰½ƒXƒeƒbƒv‚Ü‚ÅŒvŽZ‚µ‚Ü‚·‚©? nend->";
+	cout << "end step: nend->";
 	cin >> nend;
-	cout << "ƒTƒ“ƒvƒ‹ƒXƒeƒbƒv”‚ð“ü—Í‚µ‚Ä‚­‚¾‚³‚¢ nsample->";
+	cout << "sample step: nsample->";
 	cin >> nsample;
 
 }
@@ -157,40 +157,40 @@ Boundarycond::Boundarycond()
 	set_BC();
 }
 void Boundarycond::set_BC() {
-	cout << "‰ðÍ—Ìˆæ‚Ì‹«ŠEðŒ" << endl;
-	cout << "0:—¬“ü‹«ŠE(diriclet),1:—¬o‹«ŠE(neumann dv/dx=0)" << endl;
+	cout << "Set boundary condition" << endl;
+	cout << "0:inlet(diriclet),1:outlet(neumann dv/dx=0)" << endl;
 	/*
-	cout << "ã•Ç–Ê‚Ì‹«ŠEðŒ‚ðŒˆ‚ß‚Ä‚­‚¾‚³‚¢" << endl;
+	cout << "ä¸Šå£é¢ã®å¢ƒç•Œæ¡ä»¶ã‚’æ±ºã‚ã¦ãã ã•ã„" << endl;
 	cin >> flagU;
-	cout << "¶•Ç–Ê‚Ì‹«ŠEðŒ‚ðŒˆ‚ß‚Ä‚­‚¾‚³‚¢" << endl;
+	cout << "å·¦å£é¢ã®å¢ƒç•Œæ¡ä»¶ã‚’æ±ºã‚ã¦ãã ã•ã„" << endl;
 	cin >> flagL;
-	cout << "‰E•Ç–Ê‚Ì‹«ŠEðŒ‚ðŒˆ‚ß‚Ä‚­‚¾‚³‚¢" << endl;
+	cout << "å³å£é¢ã®å¢ƒç•Œæ¡ä»¶ã‚’æ±ºã‚ã¦ãã ã•ã„" << endl;
 	cin >> flagR;
-	cout << "‰º•Ç–Ê‚Ì‹«ŠEðŒ‚ðŒˆ‚ß‚Ä‚­‚¾‚³‚¢" << endl;
+	cout << "ä¸‹å£é¢ã®å¢ƒç•Œæ¡ä»¶ã‚’æ±ºã‚ã¦ãã ã•ã„" << endl;
 	cin >> flagD;
 	*/
-	cout << "ã•Ç–Ê‚Ì‹«ŠEðŒ ->1" << endl;
+	cout << "upper wall BC ->1" << endl;
 	flagU = 1;
 	if (flagU == 0) {
-		cout << "ã•Ç–Ê‚Ì—¬“ü’l->";
+		cout << "upper wal inlet value->";
 		cin >> dU;
 	}
-	cout << "¶•Ç–Ê‚Ì‹«ŠEðŒ ->0" << endl;
+	cout << "left wall BC ->0" << endl;
 	flagL = 0;
 	if (flagL == 0) {
-		cout << "¶•Ç–Ê‚Ì—¬“ü’l->";
+		cout << "left wall inlet value->";
 		cin >> dL;
 	}
-	cout << "‰E•Ç–Ê‚Ì‹«ŠEðŒ ->1" << endl;
+	cout << "right wall BC ->1" << endl;
 	flagR = 1;
 	if (flagR == 0) {
-		cout << "‰E•Ç–Ê‚Ì—¬“ü’l->";
+		cout << "right wall inlet value->";
 		cin >> dR;
 	}
-	cout << "‰º•Ç–Ê‚Ì‹«ŠEðŒ ->0" << endl;
+	cout << "downner wall BC ->0" << endl;
 	flagL = 0;
 	if (flagD == 0) {
-		cout << "‰º•Ç–Ê‚Ì—¬“ü’l->";
+		cout << "downner wall inlet value->";
 		cin >> dD;
 	}
 }
@@ -238,20 +238,20 @@ ADeq_param_2d::ADeq_param_2d(NodeP& Np, TimeP& Tp)
 	set_param();
 }
 void ADeq_param_2d::set_param() {
-	cout << "x•ûŒü‚ÌˆÚ—¬‘¬“x@cx->";
+	cout << "cx->";
 	cin >> cx;
-	cout << "x•ûŒü‚ÌˆÚ—¬‘¬“x@cy->";
+	cout << "cy->";
 	cin >> cy;
-	cout << "ŠgŽUŒW” alpha->";
+	cout << "alpha->";
 	cin >> alpha;
 	courantx = cx * tparam.getDt() / nparam.getDx();
 	couranty = cy * tparam.getDt() / nparam.getDy();
 	diffusion = alpha * tparam.getDt() / (nparam.getDx() * nparam.getDy());
-	cout << "x•ûŒücourant” Cx=" << courantx << endl;
-	cout << "y•ûŒücourant” Cy=" << couranty << endl;
-	cout << "ŠgŽU” D=" << diffusion << endl;
+	cout << "x-axis courant Cx=" << courantx << endl;
+	cout << "y-axis courant Cy=" << couranty << endl;
+	cout << "diffusion number D=" << diffusion << endl;
 	Pe = sqrt(cx * cx + cy * cy) * sqrt(nparam.getLx() * nparam.getLx() + nparam.getLy() * nparam.getLy()) / alpha;
-	cout << "Peclet” Pe=" << Pe << endl;
+	cout << "Peclet number Pe=" << Pe << endl;
 
 }
 double ADeq_param_2d::get_alpha() {

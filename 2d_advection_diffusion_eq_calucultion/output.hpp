@@ -11,6 +11,8 @@ using namespace std;
 class Outputdata {
 private:
 	int n;
+	int scheme;
+
 	vector<double> x;
 	vector<double> y;
 	vector<vector<double>> copy;
@@ -22,16 +24,17 @@ private:
 
 
 public:
-	Outputdata(Mesh2d& Mesh, Time& T, PHI& phi, ADeq_param_2d& ADP, Boundarycond& BC);
-	void output_result_csv(int N);//ŒvZŒ‹‰Ê
-	//void output_condition();//ŒvZƒpƒ‰ƒ[ƒ^
+	Outputdata(Mesh2d& Mesh, Time& T, PHI& phi, ADeq_param_2d& ADP, Boundarycond& BC, int Scheme);
+	void output_result_csv(int N);
+	//void output_condition();
 
 };
 
 string make_directories(string str1, string str2);
-	/*ƒfƒBƒŒƒNƒgƒŠ‚ğì¬‚µ‚½‚¢êŠ‚Ì•¶š—ñ‚ğì‚é
-	eƒfƒBƒŒƒNƒgƒŠ‚Ì–¼‘Ostr1‚ÆqƒfƒBƒŒƒNƒgƒŠ‚Ì–¼‘Ostr2‚ğ
-	Œ‹‡‚µƒfƒBƒŒƒNƒgƒŠstr1/str2‚ğì‚èƒŠƒ^[ƒ“‚·‚é*/
-string directories_setup(int n);
-	/*Œ‹‰Ê‚ğ•Û‘¶‚·‚é‚½‚ß‚ÌƒfƒBƒŒƒNƒgƒŠ‚ğì¬‚·‚é*/
+/*ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’ä½œæˆã—ãŸã„å ´æ‰€ã®æ–‡å­—åˆ—ã‚’ä½œã‚‹
+è¦ªãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®åå‰str1ã¨å­ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®åå‰str2ã‚’
+çµåˆã—ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªstr1/str2ã‚’ä½œã‚Šãƒªã‚¿ãƒ¼ãƒ³ã™ã‚‹*/
 
+
+string directories_setup(int n, int scheme);
+/*çµæœã‚’ä¿å­˜ã™ã‚‹ãŸã‚ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’ä½œæˆã™ã‚‹*/

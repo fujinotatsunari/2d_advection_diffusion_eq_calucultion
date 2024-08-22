@@ -1,4 +1,4 @@
-#include"solution.hpp"
+ï»¿#include"solution.hpp"
 #include"output.hpp"
 #include"FEM.hpp"
 #include"value.hpp"
@@ -18,10 +18,10 @@ Explicit_FEM::Explicit_FEM(Mesh2d& mesh_, Time& t_, PHI& phi_, Boundarycond& BC_
 
 void Explicit_FEM::do_expcalculation() {
 	
-	Lumped_Massmatrix Fm(mesh);//W’†‰»¿—Ês—ñ
-	xAdvecmatrix Amx(mesh);//ˆÚ—¬s—ñx•ûŒü
-	yAdvecmatrix Amy(mesh);//ˆÚ—¬s—ñy•ûŒü
-	Diffmatrix Dm(mesh);//ŠgUs—ñ
+	Lumped_Massmatrix Fm(mesh);//é›†ä¸­åŒ–è³ªé‡è¡Œåˆ—
+	xAdvecmatrix Amx(mesh);//ç§»æµè¡Œåˆ—xæ–¹å‘
+	yAdvecmatrix Amy(mesh);//ç§»æµè¡Œåˆ—yæ–¹å‘
+	Diffmatrix Dm(mesh);//æ‹¡æ•£è¡Œåˆ—
 	/*
 	cout << "viewFm" << endl;
 	Fm.view();
@@ -32,29 +32,30 @@ void Explicit_FEM::do_expcalculation() {
 	cout << "viewDm" << endl;
 	Dm.view();
 	*/
-	vector<double> phib;//1step‘O‚Ì•¨——Ê
+	vector<double> phib;//1stepå‰ã®ç‰©ç†é‡
 	phib.resize(mesh.nnode());
-	vector<double> dd;//ŠgU€‘«‚µ‚İ•Ï”
+	vector<double> dd;//æ‹¡æ•£é …è¶³ã—è¾¼ã¿å¤‰æ•°
 	dd.resize(mesh.nnode());
-	vector<double> uu;//ˆÚ—¬€‘«‚µ‚İ•Ï”
+	vector<double> uu;//ç§»æµé …è¶³ã—è¾¼ã¿å¤‰æ•°
 	uu.resize(mesh.nnode());
-	vector<double> nn;//‹«ŠE€‘«‚µ‚İ•Ï”
+	vector<double> nn;//å¢ƒç•Œé …è¶³ã—è¾¼ã¿å¤‰æ•°
 	nn.resize(mesh.nnode());
-	vector<double> ff;//W’†‰»¿—Ês—ñ‚Ìß“_‚Ö‚ÌŠñ—^
+	vector<double> ff;//é›†ä¸­åŒ–è³ªé‡è¡Œåˆ—ã®ç¯€ç‚¹ã¸ã®å¯„ä¸
 	ff.resize(mesh.nnode());
 
-	vector<int> nx;//‹«ŠEã‚Ì’PˆÊ–@üƒxƒNƒgƒ‹x•ûŒü
+	vector<int> nx;//å¢ƒç•Œä¸Šã®å˜ä½æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«xæ–¹å‘
 	nx.resize(mesh.nnode());
-	vector<int> ny;//‹«ŠEã‚Ì’PˆÊ–@üƒxƒNƒgƒ‹x•ûŒü
+	vector<int> ny;//å¢ƒç•Œä¸Šã®å˜ä½æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«xæ–¹å‘
 	ny.resize(mesh.nnode());
-
+	double dphidx = 0.0;
+	double dphidy = 0.0;
 	for (int j = 0; j < mesh.ynode(); j++) {
 		for (int i = 0; i < mesh.xnode(); i++) {
 			int np = i + mesh.xnode() * j;
 			nx[np] = 0;
 			ny[np] = 0;
 			if (i == 0) {
-				nx[np] = -1;//‹«ŠE–@ü’PˆÊƒxƒNƒgƒ‹
+				nx[np] = -1;//å¢ƒç•Œæ³•ç·šå˜ä½ãƒ™ã‚¯ãƒˆãƒ«
 			}
 			if (i == mesh.xnode() - 1) {
 				nx[np] = 1;
@@ -68,8 +69,8 @@ void Explicit_FEM::do_expcalculation() {
 		}
 	}
 
-	//ŠÔis
-	for (int n = 0; n <= t.nend() + 1; n++) {
+	//æ™‚é–“é€²è¡Œ
+	for (int n = 0; n <= t.nend(); n++) {
 		output(n);
 
 		cout << "time=" << t.ntime(n) << endl;
@@ -83,22 +84,21 @@ void Explicit_FEM::do_expcalculation() {
 				nn[np] = 0.0;
 			}
 		}
-		for (int j = 0; j < node; j++) {//‹ÇŠß“_ƒ‹[ƒv
-			for (int ie = 0; ie < mesh.nelem(); ie++) {//—v‘fƒ‹[ƒv
+		for (int j = 0; j < node; j++) {//å±€æ‰€ç¯€ç‚¹ãƒ«ãƒ¼ãƒ—
+			for (int ie = 0; ie < mesh.nelem(); ie++) {//è¦ç´ ãƒ«ãƒ¼ãƒ—
 				int np= mesh.nbool1(ie, j);
 				int i1 = mesh.i1(ie);
 				int i2 = mesh.i2(ie);
 				int i3 = mesh.i3(ie);
 				int i4 = mesh.i4(ie);
 
-				dd[np] = dd[np] - ADP.get_alpha() * (Dm[ie][j][0] * phi[i1] + Dm[ie][j][1] * phi[i2] + Dm[ie][j][2] * phi[i3] + Dm[ie][j][3] * phi[i4]);//ŠgU€
-				uu[np] = uu[np] - ADP.get_cx() * (Amx[ie][j][0] * phi[i1] + Amx[ie][j][1] * phi[i2] + Amx[ie][j][2] * phi[i3] + Amx[ie][j][3] * phi[i4])//ˆÚ—¬€
-					- ADP.get_cy() * (Amy[ie][j][0] * phi[i1] + Amy[ie][j][1] * phi[i2] + Amy[ie][j][2] * phi[i3] + Amy[ie][j][3] * phi[i4]);
+				dd[np] = dd[np] - ADP.get_alpha() * (Dm[ie][j][0] * phi[i1] + Dm[ie][j][1] * phi[i2] + Dm[ie][j][2] * phi[i3] + Dm[ie][j][3] * phi[i4]);//æ‹¡æ•£é …
+				uu[np] = uu[np] - ADP.get_cx() * (Amx[ie][j][0] * phi[i1] + Amx[ie][j][1] * phi[i2] + Amx[ie][j][2] * phi[i3] + Amx[ie][j][3] * phi[i4])//ç§»æµé …
+					            - ADP.get_cy() * (Amy[ie][j][0] * phi[i1] + Amy[ie][j][1] * phi[i2] + Amy[ie][j][2] * phi[i3] + Amy[ie][j][3] * phi[i4]);
 				ff[np] = ff[np] + Fm[ie][j][j];
-				double dphidx = 0.0;
-				double dphidy = 0.0;
+				
 				if (mesh.ncond(np) == 2) {
-					nn[np] = nn[np] + ADP.get_alpha() * (nx[np] * dphidx + ny[np] * dphidy);//¡‰ñ‚Í—¬o‚Ì‚İ‚ğ‚ ‚Â‚©‚¤‚Ì‚Å‹«ŠE€0
+					nn[np] = nn[np] + ADP.get_alpha() * (nx[np] * dphidx + ny[np] * dphidy);//ä»Šå›ã¯æµå‡ºã®ã¿ã‚’ã‚ã¤ã‹ã†ã®ã§å¢ƒç•Œé …ï¼0
 				}
 	
 	
@@ -108,21 +108,21 @@ void Explicit_FEM::do_expcalculation() {
 		for (int j = 0; j < mesh.ynode(); j++) {
 			for (int i = 0; i < mesh.xnode(); i++) {
 				int np = i + mesh.xnode() * j;
-				if (mesh.ncond(np) == 0) {//“à•”
+				if (mesh.ncond(np) == 0) {//å†…éƒ¨
 					phi[np] = phib[np] + t.dt() * (dd[np] + uu[np]) / ff[np];
 
 				}
-				else if (mesh.ncond(np) == 1) {//dirichlet‹«ŠEğŒ
+				else if (mesh.ncond(np) == 1) {//dirichletå¢ƒç•Œæ¡ä»¶
 					phi[np] = phib[np];
 				}
-				else if (mesh.ncond(np) == 2) {//neumann‹«ŠEğŒ
+				else if (mesh.ncond(np) == 2) {//neumannå¢ƒç•Œæ¡ä»¶
 					phi[np] = phib[np] + t.dt() * (dd[np] + uu[np] + nn[np]) / ff[np];
 
 				}
 				else {
 
 				}
-				cout << "phi[" << np << "]=" << phi[np] << endl;
+				//cout << "phi[" << np << "]=" << phi[np] << endl;
 			}
 		}
 	}
@@ -130,7 +130,120 @@ void Explicit_FEM::do_expcalculation() {
 
 void Explicit_FEM::output(int n) {
 	if (n % t.nsample() == 0) {
-		Outputdata output(mesh, t, phi, ADP, BC);
+		Outputdata output(mesh, t, phi, ADP, BC, 0);
+		output.output_result_csv(n);
+	}
+}
+Implicit_FEM::Implicit_FEM(Mesh2d& mesh_, Time& t_, PHI& phi_, Boundarycond& BC_, ADeq_param_2d& adp_)
+	:mesh(mesh_), t(t_), phi(phi_), BC(BC_), ADP(adp_)
+{
+	
+}
+
+void Implicit_FEM::do_impcaluculation() {
+	Lumped_Massmatrix Em(mesh);//è³ªé‡è¡Œåˆ—
+	xAdvecmatrix Amx(mesh);//ç§»æµè¡Œåˆ—xæ–¹å‘
+	yAdvecmatrix Amy(mesh);//ç§»æµè¡Œåˆ—yæ–¹å‘
+	Diffmatrix Dm(mesh);//æ‹¡æ•£è¡Œåˆ—
+	int Nnode = mesh.nnode();
+
+	vector<vector<double>> A;
+	A.resize(Nnode);
+	for (int i = 0; i < A.size(); i++) {
+		A[i].resize(Nnode);
+	}
+	vector<double> b;
+	b.resize(mesh.nnode());
+	vector<double> x;
+	
+	x.resize(mesh.nnode());
+
+	
+
+	vector<double> nn;//å¢ƒç•Œé …è¶³ã—è¾¼ã¿å¤‰æ•°
+	nn.resize(mesh.nnode());
+	double dphidx = 0.0;
+	double dphidy = 0.0;
+	vector<int> nx;//å¢ƒç•Œä¸Šã®å˜ä½æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«xæ–¹å‘
+	nx.resize(mesh.nnode());
+	vector<int> ny;//å¢ƒç•Œä¸Šã®å˜ä½æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«xæ–¹å‘
+	ny.resize(mesh.nnode());
+
+	for (int j = 0; j < mesh.ynode(); j++) {
+		for (int i = 0; i < mesh.xnode(); i++) {
+			int np = i + mesh.xnode() * j;
+			nx[np] = 0;
+			ny[np] = 0;
+			if (i == 0) {
+				nx[np] = -1;//å¢ƒç•Œæ³•ç·šå˜ä½ãƒ™ã‚¯ãƒˆãƒ«
+			}
+			if (i == mesh.xnode() - 1) {
+				nx[np] = 1;
+			}
+			if (j == 0) {
+				ny[np] = -1;
+			}
+			if (j == mesh.ynode() - 1) {
+				ny[np] = 1;
+			}
+		}
+	}
+
+	cout << "time=" << t.ntime(0) << endl;
+	output(0);
+
+	//æ™‚é–“é€²è¡Œ
+	for (int n = 1; n <= t.nend(); n++) {
+		cout << "time=" << t.ntime(n) << endl;
+		for (int i = 0; i < A.size(); i++) {
+			for (int j = 0; j < A[i].size(); j++) {
+				A[i][j] = 0.0;
+			}
+		}
+		for (int i = 0; i < mesh.nnode(); i++) {
+			b[i] = 0.0;
+			x[i] = 0.0;
+			nn[i] = 0.0;
+
+		}
+		for (int j = 0; j < node; j++) {
+			for (int ie = 0; ie < mesh.nelem(); ie++) {
+				int np = mesh.nbool1(ie, j);
+				int i1 = mesh.i1(ie);
+				int i2 = mesh.i2(ie);
+				int i3 = mesh.i3(ie);
+				int i4 = mesh.i4(ie);
+
+				if (mesh.ncond(np) == 1) {//dirichlet
+					A[np][np] = 1.0;
+					b[np] = phi[np];
+					
+				}
+				else {//å†…éƒ¨
+					A[np][i1] = A[np][i1] + Em[ie][j][0] + t.dt() * (ADP.get_cx() * Amx[ie][j][0] + ADP.get_cy() * Amy[ie][j][0]) + t.dt() * ADP.get_alpha() * Dm[ie][j][0];
+					A[np][i2] = A[np][i2] + Em[ie][j][1] + t.dt() * (ADP.get_cx() * Amx[ie][j][1] + ADP.get_cy() * Amy[ie][j][1]) + t.dt() * ADP.get_alpha() * Dm[ie][j][1];
+					A[np][i3] = A[np][i3] + Em[ie][j][2] + t.dt() * (ADP.get_cx() * Amx[ie][j][2] + ADP.get_cy() * Amy[ie][j][2]) + t.dt() * ADP.get_alpha() * Dm[ie][j][2];
+					A[np][i4] = A[np][i4] + Em[ie][j][3] + t.dt() * (ADP.get_cx() * Amx[ie][j][3] + ADP.get_cy() * Amy[ie][j][3]) + t.dt() * ADP.get_alpha() * Dm[ie][j][3];
+					b[np] = b[np] + Em[ie][j][0] * phi[i1] + Em[ie][j][1] * phi[i2] + Em[ie][j][2] * phi[i3] + Em[ie][j][3] * phi[i4];
+				}
+				if (mesh.ncond(np) == 2) {//neumann
+					nn[np] = nn[np] + ADP.get_alpha() * (nx[np] * dphidx + ny[np] * dphidy);//ä»Šå›ã¯æµå‡ºã®ã¿ã‚’ã‚ã¤ã‹ã†ã®ã§å¢ƒç•Œé …ï¼0
+					b[np] = b[np] + nn[np];
+				}
+			}
+		}
+		LU_solve(A, x, b);
+		for (int i = 0; i < x.size(); i++) {
+			phi[i] = x[i];
+		}
+		output(n);
+
+	}
+
+}
+void Implicit_FEM::output(int n) {
+	if (n % t.nsample() == 0) {
+		Outputdata output(mesh, t, phi, ADP, BC, 1);
 		output.output_result_csv(n);
 	}
 }

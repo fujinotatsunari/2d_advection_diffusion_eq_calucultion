@@ -1,4 +1,4 @@
-/*二次元移流拡散方程式数値解析ソリューション*/
+/*莠梧ｬ｡蜈�遘ｻ豬∵僑謨｣譁ｹ遞句ｼ乗怏髯占ｦ∫ｴ豕戊ｧ｣譫舌た繝ｪ繝･繝ｼ繧ｷ繝ｧ繝ｳ*/
 #include"param.hpp"
 #include"mesh.hpp"
 #include"value.hpp"
@@ -10,6 +10,7 @@
 using namespace std;
 
 int main(void) {
+	cout <<"2d advection diffusion equation FEM solution" << endl;
 	NodeP np;
 	TimeP tp;
 	Boundarycond BC;
@@ -20,14 +21,19 @@ int main(void) {
 
 	PHI phi(mesh, BC);
 	phi.initialize_default();
-	for (int j = 0; j < mesh.ynode(); j++) {
-		for (int i = 0; i < mesh.xnode(); i++) {
-			int np = i + mesh.xnode()*j;
-			cout << "x[" << np << "]=" << mesh.x(np) << "  y[" << np << "]=" << mesh.y(np) << endl;
-			cout << phi[np] << endl;
-		}
+	int scheme;
+	cout << "set Time scheme" << endl;
+	cout << "0:Explicit, 1:Implicit" << endl;
+	cin >> scheme;
+	if (scheme == 0) {
+
+		Explicit_FEM solution(mesh, T, phi, BC, ad);
+		solution.do_expcalculation();
 	}
-	Explicit_FEM solution(mesh, T, phi, BC, ad);
-	solution.do_expcalculation();
+	else if (scheme == 1) {
+		Implicit_FEM solution(mesh, T, phi, BC, ad);
+		solution.do_impcaluculation();
+	}
+	
 
 }

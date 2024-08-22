@@ -3,12 +3,11 @@
 #include"param.hpp"
 #include<vector>
 
-
-class Node2d {//ŒvZŠiqã‚Ìß“_
+class Node2d {//è¨ˆç®—æ ¼å­ä¸Šã®ç¯€ç‚¹
 private:
-	int no;//ß“_”Ô†
-	double x;//À•Wx¬•ª
-	double y;//À•Wy¬•ª
+	int no;//ç¯€ç‚¹ç•ªå·
+	double x;//åº§æ¨™xæˆåˆ†
+	double y;//åº§æ¨™yæˆåˆ†
 public:
 	Node2d();
 	void setNo(int no_);
@@ -20,12 +19,12 @@ public:
 
 };
 
-class Element2d {//ŒvZŠiqã‚Ì—v‘f
+class Element2d {//è¨ˆç®—æ ¼å­ä¸Šã®è¦ç´ 
 private:
-	int no;//—v‘f”Ô†
-	double x;//—v‘fdSÀ•Wx¬•ª
-	double y;//—v‘fdSÀ•Wy¬•ª
-	double Se;//—v‘f–ÊÏ
+	int no;//è¦ç´ ç•ªå·
+	double x;//è¦ç´ é‡å¿ƒåº§æ¨™xæˆåˆ†
+	double y;//è¦ç´ é‡å¿ƒåº§æ¨™yæˆåˆ†
+	double Se;//è¦ç´ é¢ç©
 public:
 	Element2d();
 	void setNo(int no_);
@@ -39,17 +38,17 @@ public:
 };
 
 
-class Time {//ŠÔ²
+class Time {//æ™‚é–“è»¸
 private:
-	double ntime_;//nƒXƒeƒbƒv‚Å‚Ì
-	double dt_;//ŠÔ‚İ•
-	int nend_;//I—¹ƒXƒeƒbƒv
-	int nsample_;//ƒTƒ“ƒvƒ‹ƒXƒeƒbƒv
+	double ntime_;//nã‚¹ãƒ†ãƒƒãƒ—ã§ã®æ™‚åˆ»
+	double dt_;//æ™‚é–“åˆ»ã¿å¹…
+	int nend_;//çµ‚äº†ã‚¹ãƒ†ãƒƒãƒ—
+	int nsample_;//ã‚µãƒ³ãƒ—ãƒ«ã‚¹ãƒ†ãƒƒãƒ—
 	vector<double> t;
 	TimeP& tparam;
 public:
 	Time(TimeP& TP);
-	//ƒQƒbƒ^
+	//ã‚²ãƒƒã‚¿
 	double ntime(int n);
 	void setup();
 	double dt();
@@ -59,20 +58,20 @@ public:
 	double& operator[](int n);
 
 };
-class Mesh2d {//ŒvZŠiq
-	//1: ”z—ñ‚ğ—^‚¦‚é‚Ì‚Å‚Í‚È‚­, “ü—Í‚ÌƒCƒ“ƒfƒbƒNƒX‚É‘Î‰‚·‚é”z—ñ‚Ì’†g‚ğ—^‚¦‚é‚æ‚¤‚É‚·‚é
-	//2:‚±‚ÌƒNƒ‰ƒX‚Ì–ğŠ„‚ÍŒvZ‚·‚é‹óŠÔ‚ğ’è‹`‚µ, ‚»‚Ì‹óŠÔã‚Å•¨——Ê‚ÌŒvZ‚ğ‘–‚ç‚¹‚é‚½‚ß‚Ì”•Ï”‚Ì’ñ‹Ÿ‚Å‚ ‚é
+class Mesh2d {//è¨ˆç®—æ ¼å­
+	//1: é…åˆ—ã‚’ä¸ãˆã‚‹ã®ã§ã¯ãªã, å…¥åŠ›ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã«å¯¾å¿œã™ã‚‹é…åˆ—ã®ä¸­èº«ã‚’ä¸ãˆã‚‹ã‚ˆã†ã«ã™ã‚‹
+	//2:ã“ã®ã‚¯ãƒ©ã‚¹ã®å½¹å‰²ã¯è¨ˆç®—ã™ã‚‹ç©ºé–“ã‚’å®šç¾©ã—, ãã®ç©ºé–“ä¸Šã§ç‰©ç†é‡ã®è¨ˆç®—ã‚’èµ°ã‚‰ã›ã‚‹ãŸã‚ã®è«¸å¤‰æ•°ã®æä¾›ã§ã‚ã‚‹
 private:
 
 	NodeP& nparam_;
 	Boundarycond& Bcond_;
 	vector<Node2d> node_;
 	vector<Element2d> elem_;
-	vector<int> ncond_;//ß“_‹«ŠEƒtƒ‰ƒO
-	//‹«ŠEğŒƒtƒ‰ƒO‚Ìİ’è
-	//ncond:  0:“à•”,1:—¬“ü‹«ŠEğŒ,2:—¬o‹«ŠEğŒ
-	vector<vector<int>> nbool1_;//nbool[—v‘f”Ô†][—v‘f“àß“_”Ô†]=‘S‘Ìß“_”Ô†
-	vector<vector<int>> nbool3_;//nbool3[—v‘f”Ô†][ƒ[ƒJƒ‹‚È—v‘f”Ô†]=‘S‘Ì—v‘f”Ô† ::‚ ‚é—v‘f‚É—×Ú‚·‚é—v‘f‚Ì”Ô†
+	vector<int> ncond_;//ç¯€ç‚¹å¢ƒç•Œãƒ•ãƒ©ã‚°
+	//å¢ƒç•Œæ¡ä»¶ãƒ•ãƒ©ã‚°ã®è¨­å®š
+	//ncond:  0:å†…éƒ¨,1:æµå…¥å¢ƒç•Œæ¡ä»¶,2:æµå‡ºå¢ƒç•Œæ¡ä»¶
+	vector<vector<int>> nbool1_;//nbool[è¦ç´ ç•ªå·][è¦ç´ å†…ç¯€ç‚¹ç•ªå·]=å…¨ä½“ç¯€ç‚¹ç•ªå·
+	vector<vector<int>> nbool3_;//nbool3[è¦ç´ ç•ªå·][ãƒ­ãƒ¼ã‚«ãƒ«ãªè¦ç´ ç•ªå·]=å…¨ä½“è¦ç´ ç•ªå· ::ã‚ã‚‹è¦ç´ ã«éš£æ¥ã™ã‚‹è¦ç´ ã®ç•ªå·
 	double xb_, xt_, yb_, yt_, dx_, dy_, Lx_, Ly_;
 	int xnode_, ynode_, xelem_, yelem_, nnode_, nelem_;
 public:
@@ -80,7 +79,7 @@ public:
 	Mesh2d(NodeP& NP, Boundarycond& BC);
 	Mesh2d& operator=(const Mesh2d& mesh);
 	Mesh2d(const Mesh2d& mesh);
-	//ƒQƒbƒ^
+	//ã‚²ãƒƒã‚¿
 	double xb();
 	double xt();
 	double yb();
@@ -89,11 +88,11 @@ public:
 	double dy();
 	double Lx();
 	double Ly();
-	double x(int i);//ß“_”Ô†‚É‘Î‰‚·‚éxÀ•W
-	double y(int i);//ß“_”Ô†‚É‘Î‰‚·‚éyÀ•W
-	double eX(int ie);//—v‘f”Ô†‚É‘Î‰‚·‚éxÀ•W
-	double eY(int ie);//—v‘f”Ô†‚É‘Î‰‚·‚éyÀ•W
-	double Se(int ie);//—v‘f”Ô†‚É‘Î‰‚·‚é—v‘f–ÊÏ
+	double x(int i);//ç¯€ç‚¹ç•ªå·ã«å¯¾å¿œã™ã‚‹xåº§æ¨™
+	double y(int i);//ç¯€ç‚¹ç•ªå·ã«å¯¾å¿œã™ã‚‹yåº§æ¨™
+	double eX(int ie);//è¦ç´ ç•ªå·ã«å¯¾å¿œã™ã‚‹xåº§æ¨™
+	double eY(int ie);//è¦ç´ ç•ªå·ã«å¯¾å¿œã™ã‚‹yåº§æ¨™
+	double Se(int ie);//è¦ç´ ç•ªå·ã«å¯¾å¿œã™ã‚‹è¦ç´ é¢ç©
 	int xnode();
 	int ynode();
 	int xelem();
@@ -102,19 +101,19 @@ public:
 	int nelem();
 
 	int nbool1(int ie, int np);
-	int i1(int ie);//nbool1[ie][0]‚É‘Î‰‚·‚éß“_
-	int i2(int ie);//nbool1[ie][1]‚É‘Î‰‚·‚éß“_
-	int i3(int ie);//nbool1[ie][2]‚É‘Î‰‚·‚éß“_
-	int i4(int ie);//nbool1[ie][3]‚É‘Î‰‚·‚éß“_
+	int i1(int ie);//nbool1[ie][0]ã«å¯¾å¿œã™ã‚‹ç¯€ç‚¹
+	int i2(int ie);//nbool1[ie][1]ã«å¯¾å¿œã™ã‚‹ç¯€ç‚¹
+	int i3(int ie);//nbool1[ie][2]ã«å¯¾å¿œã™ã‚‹ç¯€ç‚¹
+	int i4(int ie);//nbool1[ie][3]ã«å¯¾å¿œã™ã‚‹ç¯€ç‚¹
 	int nbool3(int ie, int np);
-	int e1(int ie);//nbool3[ie][0]‚É‘Î‰‚·‚é—v‘f
-	int e2(int ie);//nbool3[ie][1]‚É‘Î‰‚·‚é—v‘f
-	int e3(int ie);//nbool3[ie][2]‚É‘Î‰‚·‚é—v‘f
-	int e4(int ie);//nbool3[ie][3]‚É‘Î‰‚·‚é—v‘f
+	int e1(int ie);//nbool3[ie][0]ã«å¯¾å¿œã™ã‚‹è¦ç´ 
+	int e2(int ie);//nbool3[ie][1]ã«å¯¾å¿œã™ã‚‹è¦ç´ 
+	int e3(int ie);//nbool3[ie][2]ã«å¯¾å¿œã™ã‚‹è¦ç´ 
+	int e4(int ie);//nbool3[ie][3]ã«å¯¾å¿œã™ã‚‹è¦ç´ 
 	int ncond(int i);
 
-	void setup();//‰Šú‰»
-	void generate_uniform_grid();//“™ŠÔŠuƒOƒŠƒbƒh‚Ìì¬(ƒfƒtƒHƒ‹ƒg‚ÅŒÄ‚Ño‚³‚ê‚é)
-	//void generate_cylinder_grid();//‰~’Œü‚èƒOƒŠƒbƒh‚Ìì¬
+	void setup();//åˆæœŸåŒ–
+	void generate_uniform_grid();//ç­‰é–“éš”ã‚°ãƒªãƒƒãƒ‰ã®ä½œæˆ(ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§å‘¼ã³å‡ºã•ã‚Œã‚‹)
+	//void generate_cylinder_grid();//å††æŸ±å‘¨ã‚Šã‚°ãƒªãƒƒãƒ‰ã®ä½œæˆ
 
 };

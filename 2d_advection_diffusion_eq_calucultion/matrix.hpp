@@ -5,9 +5,9 @@
 using namespace std;
 class Matrix {
 private:
-	vector<vector<double>> mat;//s—ñ‚Ì“ñŸŒ³”z—ñ
-	int row;//s
-	int col;//—ñ
+	vector<vector<double>> mat;
+	int row;//ï¿½s
+	int col;//ï¿½ï¿½
 public:
 	//using Index = pair<int, int >;
 	Matrix();
@@ -27,7 +27,8 @@ public:
 	void swap_elem(int i1, int j1, int i2, int j2);
 	void swap_rows(int i, int j);
 	void print() const;
-
+	void clean();
+	void generate(int row_, int col_);
 
 };
 //Matrix operator+(const Matrix& A, const Matrix& B);

@@ -7,8 +7,8 @@
 #include <fstream>
 
 using namespace std;
-Outputdata::Outputdata(Mesh2d& Mesh, Time& T, PHI& Phi, ADeq_param_2d& ADP, Boundarycond& bc) 
-	:n(0),mesh(Mesh),t(T),phi(Phi),adp(ADP),BC(bc)
+Outputdata::Outputdata(Mesh2d& Mesh, Time& T, PHI& Phi, ADeq_param_2d& ADP, Boundarycond& bc, int Scheme) 
+	:n(0),mesh(Mesh),t(T),phi(Phi),adp(ADP),BC(bc),scheme(Scheme)
 {
 	
 	x.resize(mesh.xnode());
@@ -19,7 +19,7 @@ Outputdata::Outputdata(Mesh2d& Mesh, Time& T, PHI& Phi, ADeq_param_2d& ADP, Boun
 	}
 	for (int j = 0; j < mesh.ynode(); j++) {
 		for (int i = 0; i < mesh.xnode(); i++) {
-			int np = i + mesh.xnode() * j; //ß“_”Ô†
+			int np = i + mesh.xnode() * j; 
 			copy[i][j] = phi[np];
 
 			if (i == 0) {
@@ -34,11 +34,11 @@ Outputdata::Outputdata(Mesh2d& Mesh, Time& T, PHI& Phi, ADeq_param_2d& ADP, Boun
 void Outputdata::output_result_csv(int N) {
 	n = N;
 	string str;
-	string str1;//makedirectories‚Å‹A‚Á‚Ä‚­‚éƒpƒX
+	string str1;//makedirectoriesï¿½Å‹Aï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½pï¿½X
 	string str2;
 	string str3;
 
-	str1 = directories_setup(n);//C:///.../data_(i)
+	str1 = directories_setup(n, scheme);//C:///.../data_(i)
 	str2 = "result_csv";
 	str3 = make_directories(str1, str2);//C:/..../data_(i)/result_csv
 	str = str3 + "/" + "t = " + to_string(t.ntime(n)) + "_" + "phi.csv";
@@ -59,27 +59,25 @@ void Outputdata::output_result_csv(int N) {
 	outputfile.close();
 }
 string make_directories(string str1, string str2) {
-	/*ƒfƒBƒŒƒNƒgƒŠ‚ğì¬‚µ‚½‚¢êŠ‚Ì•¶š—ñ‚ğì‚é
-	eƒfƒBƒŒƒNƒgƒŠ‚Ì–¼‘Ostr1‚ÆqƒfƒBƒŒƒNƒgƒŠ‚Ì–¼‘Ostr2‚ğ
-	Œ‹‡‚µƒfƒBƒŒƒNƒgƒŠstr1/str2‚ğì‚èƒŠƒ^[ƒ“‚·‚é*/
+
 	string str;
 	str = str1 + "/" + str2;
 	struct stat statBuf;
 	if (stat(str.c_str(), &statBuf) != 0) {
 		if (_mkdir(str.c_str()) == 0) {
-			// ¬Œ÷
-			cout << str << "‚ªì¬‚³‚ê‚Ü‚µ‚½" << endl;
+			// ï¿½ï¿½ï¿½ï¿½
+			cout << str << "ï¿½ï¿½ï¿½ì¬ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½" << endl;
 			return str;
 		}
 		else {
-			// ¸”s
-			cout << str << "‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½" << endl;
+			// ï¿½ï¿½ï¿½s
+			cout << str << "ï¿½Ìì¬ï¿½Éï¿½ï¿½sï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½" << endl;
 			exit(-1);
 		}
 	}
 	else {
 
-		//cout << str << "‚Í‚·‚Å‚É‚ ‚è‚Ü‚·" << endl;
+		//cout << str << "ï¿½Í‚ï¿½ï¿½Å‚É‚ï¿½ï¿½ï¿½Ü‚ï¿½" << endl;
 		return str;
 	}
 
@@ -88,10 +86,11 @@ string directories_setup(int n) {
 	string dirname0 = "C:";
 	string dirname1 = "Result";
 	string dirname2 = "2d_advection_diffusion_eq_calculation";
+	
 	string dirname3 = "FEM_explicit";
 	string dirname4 = "result";
-	string str;//makedirectories‚Å‹A‚Á‚Ä‚­‚éƒpƒX
-	string str1;//str‚ÌƒpƒX‚É’Ç‰Á‚µ‚½‚¢ƒfƒBƒŒƒNƒgƒŠ
+	string str;
+	string str1;
 
 	string year;
 	string month;
@@ -114,44 +113,127 @@ string directories_setup(int n) {
 
 	int check = 0;
 
-	if (n == 0) {//ŠÔƒXƒeƒbƒv‚ª0(‰‰ñŒÄ‚Ño‚µ)
+	if (n == 0) {//ï¿½ï¿½ï¿½ÔƒXï¿½eï¿½bï¿½vï¿½ï¿½0(ï¿½ï¿½ï¿½ï¿½Ä‚Ñoï¿½ï¿½ï¿½ï¿½)
 		for (int i = 0; check == 0; i++) {
 			str1 = str + "/" + "data" + to_string(i);//C:/../data_i
 			if (stat(str1.c_str(), &statBuf) != 0) {
-				//C:/../data_i‚ª‚»‚ñ‚´‚¢‚µ‚È‚¢‚Æ‚«
-				str1 = "data" + to_string(i);//‘¶İ‚µ‚È‚¢‚Ì‚Å‚Â‚­‚é
+				//C:/../data_iï¿½ï¿½ï¿½ï¿½ï¿½ñ‚´‚ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½Æ‚ï¿½
+				str1 = "data" + to_string(i);//ï¿½ï¿½ï¿½İ‚ï¿½ï¿½È‚ï¿½ï¿½Ì‚Å‚Â‚ï¿½ï¿½ï¿½
 				str = make_directories(str, str1);
 				check = 1;
 				return str;//C:/../data_i
 			}
 			else {
-				//C:/../data_i‚ª‚»‚ñ‚´‚¢‚·‚é‚Æ‚«
+				//C:/../data_iï¿½ï¿½ï¿½ï¿½ï¿½ñ‚´‚ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½
 			}
 		}
 	}
-	else {//ŠÔƒXƒeƒbƒv‚ª0‚¶‚á‚È‚¢(‰‰ñ‚Å‚Í‚È‚¢)
+	else {//ï¿½ï¿½ï¿½ÔƒXï¿½eï¿½bï¿½vï¿½ï¿½0ï¿½ï¿½ï¿½ï¿½È‚ï¿½(ï¿½ï¿½ï¿½ï¿½Å‚Í‚È‚ï¿½)
 		for (int i = 0; check == 0; i++) {
 			str1 = str + "/" + "data" + to_string(i);//C:/../data_i
 			if (stat(str1.c_str(), &statBuf) != 0) {
-				//C:/../data_i‚ª‚»‚ñ‚´‚¢‚µ‚È‚¢‚Æ‚«
+				//C:/../data_iï¿½ï¿½ï¿½ï¿½ï¿½ñ‚´‚ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½Æ‚ï¿½
 				str1 = "data" + to_string(i);
 				str = make_directories(str, str1);
 				check = 1;
 				return str;
 			}
 			else {
-				//str1‚ª‚»‚ñ‚´‚¢‚·‚é‚Æ‚«
+				//str1ï¿½ï¿½ï¿½ï¿½ï¿½ñ‚´‚ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½
 				int j = i + 1;
 				str1 = str + "/" + "data" + to_string(j);//C:/../data_(i+1)
 				if (stat(str1.c_str(), &statBuf) != 0) {
-					//data(i+1)‚ª‘¶İ‚µ‚È‚¢<=>datai‚ªÅŒã<=>datai‚Ö•Û‘¶
+					//data(i+1)ï¿½ï¿½ï¿½ï¿½ï¿½İ‚ï¿½ï¿½È‚ï¿½<=>dataiï¿½ï¿½ï¿½ÅŒï¿½<=>dataiï¿½Ö•Û‘ï¿½
 					str1 = "data" + to_string(i);
 					str = make_directories(str, str1);
 					check = 1;
 					return str;
 				}
 				else {
-					//data(i+1)‚ª‘¶İ
+					//data(i+1)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				}
+			}
+
+		}
+	}
+
+
+}
+string directories_setup(int n, int scheme) {
+	string dirname0 = "C:";
+	string dirname1 = "Result";
+	string dirname2 = "2d_advection_diffusion_eq_calculation";
+	string dirname3;
+	if (scheme == 0) {//ï¿½zï¿½ï¿½@ï¿½Ì‚Æ‚ï¿½
+		dirname3 = "FEM_explicit";
+	}
+	else if (scheme == 1) {//ï¿½Aï¿½ï¿½@ï¿½Ì‚Æ‚ï¿½
+		dirname3 = "FEM_implicit";
+	}
+	
+	string dirname4 = "result";
+	string str;//makedirectoriesï¿½Å‹Aï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½pï¿½X
+	string str1;//strï¿½Ìƒpï¿½Xï¿½É’Ç‰ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½fï¿½Bï¿½ï¿½ï¿½Nï¿½gï¿½ï¿½
+
+	string year;
+	string month;
+	string day;
+
+	time_t timer;
+	struct tm local_time;
+	timer = time(NULL);
+	localtime_s(&local_time, &timer);
+	struct stat statBuf;
+
+	str = make_directories(make_directories(make_directories(make_directories(dirname0, dirname1), dirname2), dirname3), dirname4);
+
+	year = to_string(local_time.tm_year + 1900);
+	month = to_string(local_time.tm_mon + 1);
+	day = to_string(local_time.tm_mday);
+
+	str1 = year + month + day;
+	str = make_directories(str, str1);//C:/..../day
+
+	int check = 0;
+
+	if (n == 0) {//ï¿½ï¿½ï¿½ÔƒXï¿½eï¿½bï¿½vï¿½ï¿½0(ï¿½ï¿½ï¿½ï¿½Ä‚Ñoï¿½ï¿½ï¿½ï¿½)
+		for (int i = 0; check == 0; i++) {
+			str1 = str + "/" + "data" + to_string(i);//C:/../data_i
+			if (stat(str1.c_str(), &statBuf) != 0) {
+				//C:/../data_iï¿½ï¿½ï¿½ï¿½ï¿½ñ‚´‚ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½Æ‚ï¿½
+				str1 = "data" + to_string(i);//ï¿½ï¿½ï¿½İ‚ï¿½ï¿½È‚ï¿½ï¿½Ì‚Å‚Â‚ï¿½ï¿½ï¿½
+				str = make_directories(str, str1);
+				check = 1;
+				return str;//C:/../data_i
+			}
+			else {
+				//C:/../data_iï¿½ï¿½ï¿½ï¿½ï¿½ñ‚´‚ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½
+			}
+		}
+	}
+	else {//ï¿½ï¿½ï¿½ÔƒXï¿½eï¿½bï¿½vï¿½ï¿½0ï¿½ï¿½ï¿½ï¿½È‚ï¿½(ï¿½ï¿½ï¿½ï¿½Å‚Í‚È‚ï¿½)
+		for (int i = 0; check == 0; i++) {
+			str1 = str + "/" + "data" + to_string(i);//C:/../data_i
+			if (stat(str1.c_str(), &statBuf) != 0) {
+				//C:/../data_iï¿½ï¿½ï¿½ï¿½ï¿½ñ‚´‚ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½Æ‚ï¿½
+				str1 = "data" + to_string(i);
+				str = make_directories(str, str1);
+				check = 1;
+				return str;
+			}
+			else {
+				//str1ï¿½ï¿½ï¿½ï¿½ï¿½ñ‚´‚ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½
+				int j = i + 1;
+				str1 = str + "/" + "data" + to_string(j);//C:/../data_(i+1)
+				if (stat(str1.c_str(), &statBuf) != 0) {
+					//data(i+1)ï¿½ï¿½ï¿½ï¿½ï¿½İ‚ï¿½ï¿½È‚ï¿½<=>dataiï¿½ï¿½ï¿½ÅŒï¿½<=>dataiï¿½Ö•Û‘ï¿½
+					str1 = "data" + to_string(i);
+					str = make_directories(str, str1);
+					check = 1;
+					return str;
+				}
+				else {
+					//data(i+1)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				}
 			}
 
@@ -188,7 +270,7 @@ void output_csv(int n, double time, int xelem, int yelem, double* x, double* y, 
 	}
 	for (int j = 0; j < ynode; j++) {
 		for (int i = 0; i < xnode; i++) {
-			int np = i + xnode * j; //ß“_”Ô†
+			int np = i + xnode * j; //ï¿½ß“_ï¿½Ôï¿½
 
 			output_phi[i][j] = phi[np];
 			if (i == 0) {
@@ -201,7 +283,7 @@ void output_csv(int n, double time, int xelem, int yelem, double* x, double* y, 
 	}
 
 	std::string str;
-	std::string str1;//makedirectories‚Å‹A‚Á‚Ä‚­‚éƒpƒX
+	std::string str1;//makedirectoriesï¿½Å‹Aï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½pï¿½X
 	std::string str2;
 	std::string str3;
 
@@ -240,7 +322,7 @@ void output_inp(int n, double time, int xelement, int yelement, double* x, doubl
 	int nelem = xelement * yelement;
 	int nnode = xnode * ynode;
 
-	int** nbool1;   //nbool[—v‘f”Ô†][‹ÇŠß“_”Ô†] = ‘S‘Ìß“_”Ô†
+	int** nbool1;   //nbool[ï¿½vï¿½fï¿½Ôï¿½][ï¿½Çï¿½ï¿½ß“_ï¿½Ôï¿½] = ï¿½Sï¿½Ìß“_ï¿½Ôï¿½
 	nbool1 = new int* [nelem];
 	nbool1[0] = new int[nelem * NODE];
 
@@ -265,7 +347,7 @@ void output_inp(int n, double time, int xelement, int yelement, double* x, doubl
 
 
 	std::string str;
-	std::string str1;//makedirectories‚Å‹A‚Á‚Ä‚­‚éƒpƒX
+	std::string str1;//makedirectoriesï¿½Å‹Aï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½pï¿½X
 	std::string str2;
 	std::string str3;
 
@@ -280,12 +362,12 @@ void output_inp(int n, double time, int xelement, int yelement, double* x, doubl
 	outputfile << "data\n";
 	outputfile << "step" << n << " t=" << time << "\n";
 	outputfile << nnode << " " << nelem << "\n";
-	for (int i = 0; i < nnode; i++) {       //ß“_”Ô† x,y,zÀ•W
-		//2ŸŒ³‚æ‚èz=0
+	for (int i = 0; i < nnode; i++) {       //ï¿½ß“_ï¿½Ôï¿½ x,y,zï¿½ï¿½ï¿½W
+		//2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½z=0
 		outputfile << i << " " << x[i] << " " << y[i] << " " << 0.0 << "\n";
 
 	}
-	for (int ie = 0; ie < nelem; ie++) {        //—v‘f”Ô†@Ş¿”Ô†@—v‘fí—Ş@—v‘f\¬
+	for (int ie = 0; ie < nelem; ie++) {        //ï¿½vï¿½fï¿½Ôï¿½ï¿½@ï¿½Şï¿½ï¿½Ôï¿½ï¿½@ï¿½vï¿½fï¿½ï¿½Ş@ï¿½vï¿½fï¿½\ï¿½ï¿½
 
 		outputfile << ie << " " << 1 << " " << "quad";
 		for (int i = 0; i < 4; i++) {
@@ -296,7 +378,7 @@ void output_inp(int n, double time, int xelement, int yelement, double* x, doubl
 	outputfile << 1 << " " << 0 << "\n";
 	outputfile << 1 << " " << 1 << "\n";
 	outputfile << "Temperature, _\n";
-	for (int i = 0; i < nnode; i++) {   //ß“_”Ô†@ß“_ƒf[ƒ^’l
+	for (int i = 0; i < nnode; i++) {   //ï¿½ß“_ï¿½Ôï¿½ï¿½@ï¿½ß“_ï¿½fï¿½[ï¿½^ï¿½l
 		outputfile << i << " " << phi[i] << "\n";
 	}
 	outputfile.close();
