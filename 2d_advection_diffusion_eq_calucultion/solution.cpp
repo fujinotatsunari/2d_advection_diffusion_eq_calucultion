@@ -1,4 +1,4 @@
-﻿#include"solution.hpp"
+#include"solution.hpp"
 #include"output.hpp"
 #include"FEM.hpp"
 #include"value.hpp"
