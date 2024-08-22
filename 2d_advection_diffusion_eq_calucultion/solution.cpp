@@ -82,6 +82,7 @@ void Explicit_FEM::do_expcalculation() {
 				phib[np] = phi[np];
 				dd[np] = 0.0;
 				uu[np] = 0.0;
+				ff[np] = 0.0;
 				nn[np] = 0.0;
 			}
 		}
@@ -105,6 +106,7 @@ void Explicit_FEM::do_expcalculation() {
 	
 			}
 		}
+
 		
 		for (int j = 0; j < mesh.ynode(); j++) {
 			for (int i = 0; i < mesh.xnode(); i++) {
