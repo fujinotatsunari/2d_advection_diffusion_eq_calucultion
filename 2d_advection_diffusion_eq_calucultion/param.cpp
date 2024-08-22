@@ -47,26 +47,26 @@ NodeP& NodeP::operator=(const NodeP& Np) {
 }
 void NodeP::setNodeParam() {
 	
-	cout << "X-axis bottom: xb->";
+	cout << "X軸左端: xb->";
 	cin >> xb;
-	cout << "X-axis top: xt->";
+	cout << "X軸右端: xt->";
 	cin >> xt;
-	cout << "Y-axis bottom: yb->";
+	cout << "Y軸下端: yb->";
 	cin >> yb;
-	cout << "Y-axis top: yt->";
+	cout << "Y軸上端: yt->";
 	cin >> yt;
 	Lx = xt - xb;
 	Ly = yt - yb;
 
-	cout << "xelement ->";
+	cout << "x方向要素数 ->";
 	cin >> xelem;
-	cout << "yelement ->";
+	cout << "y方向要素数 ->";
 	cin >> yelem;
 	xnode = xelem + 1;
 	ynode = yelem + 1;
 	nnode = xnode * ynode;
 	nelem = xelem * yelem;
-	cout << "all nodes> 　" << nnode << "　all elements->" << nelem << endl;
+	cout << "総節点数 -> 　" << nnode << "総要素数 ->" << nelem << endl;
 	dx = Lx / (double)xelem;
 	dy = Ly / (double)yelem;
 	cout << "dx=" << dx << endl;
@@ -135,9 +135,9 @@ TimeP& TimeP::operator=(const TimeP& Tp) {
 void TimeP::setTparam() {
 	cout << "dt->";
 	cin >> dt;
-	cout << "end step: nend->";
+	cout << "終了ステップ->";
 	cin >> nend;
-	cout << "sample step: nsample->";
+	cout << "サンプルステップ数: nsample->";
 	cin >> nsample;
 
 }
@@ -157,8 +157,8 @@ Boundarycond::Boundarycond()
 	set_BC();
 }
 void Boundarycond::set_BC() {
-	cout << "Set boundary condition" << endl;
-	cout << "0:inlet(diriclet),1:outlet(neumann dv/dx=0)" << endl;
+	cout << "境界条件の設定" << endl;
+	cout << "0:流入境界(diriclet),1:流出境界(neumann dv/dx=0)" << endl;
 	/*
 	cout << "上壁面の境界条件を決めてください" << endl;
 	cin >> flagU;
@@ -169,28 +169,28 @@ void Boundarycond::set_BC() {
 	cout << "下壁面の境界条件を決めてください" << endl;
 	cin >> flagD;
 	*/
-	cout << "upper wall BC ->1" << endl;
+	cout << "上壁面の境界条件 ->1" << endl;
 	flagU = 1;
 	if (flagU == 0) {
-		cout << "upper wal inlet value->";
+		cout << "流入値->";
 		cin >> dU;
 	}
-	cout << "left wall BC ->0" << endl;
+	cout << "左壁面の境界条件 ->0" << endl;
 	flagL = 0;
 	if (flagL == 0) {
-		cout << "left wall inlet value->";
+		cout << "流入値->";
 		cin >> dL;
 	}
-	cout << "right wall BC ->1" << endl;
+	cout << "右壁面の境界条件 ->1" << endl;
 	flagR = 1;
 	if (flagR == 0) {
-		cout << "right wall inlet value->";
+		cout << "流入値->";
 		cin >> dR;
 	}
-	cout << "downner wall BC ->0" << endl;
+	cout << "下壁面の境界条件 ->0" << endl;
 	flagL = 0;
 	if (flagD == 0) {
-		cout << "downner wall inlet value->";
+		cout << "流入値->";
 		cin >> dD;
 	}
 }
@@ -238,20 +238,20 @@ ADeq_param_2d::ADeq_param_2d(NodeP& Np, TimeP& Tp)
 	set_param();
 }
 void ADeq_param_2d::set_param() {
-	cout << "cx->";
+	cout << "x方向定常流速cx->";
 	cin >> cx;
-	cout << "cy->";
+	cout << "y方向定常流速cy->";
 	cin >> cy;
-	cout << "alpha->";
+	cout << "拡散係数　alpha->";
 	cin >> alpha;
 	courantx = cx * tparam.getDt() / nparam.getDx();
 	couranty = cy * tparam.getDt() / nparam.getDy();
 	diffusion = alpha * tparam.getDt() / (nparam.getDx() * nparam.getDy());
-	cout << "x-axis courant Cx=" << courantx << endl;
-	cout << "y-axis courant Cy=" << couranty << endl;
-	cout << "diffusion number D=" << diffusion << endl;
+	cout << "x方向 courant数 Cx=" << courantx << endl;
+	cout << "y方向 courant数 Cy=" << couranty << endl;
+	cout << "拡散数 D=" << diffusion << endl;
 	Pe = sqrt(cx * cx + cy * cy) * sqrt(nparam.getLx() * nparam.getLx() + nparam.getLy() * nparam.getLy()) / alpha;
-	cout << "Peclet number Pe=" << Pe << endl;
+	cout << "Peclet数 Pe=" << Pe << endl;
 
 }
 double ADeq_param_2d::get_alpha() {
