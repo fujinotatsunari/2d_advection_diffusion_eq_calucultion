@@ -3,7 +3,7 @@
 #include<vector>
 using namespace std;
 
-class NodeP {//�v�Z�i�q�p�����[�^�N���X
+class NodeP {
 private:
 	double Lx, Ly;
 	double xb, yb;
