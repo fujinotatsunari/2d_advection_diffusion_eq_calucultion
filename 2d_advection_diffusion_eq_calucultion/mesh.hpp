@@ -19,6 +19,7 @@ public:
 
 };
 
+
 class Element2d {//計算格子上の要素
 private:
 	int no;//要素番号

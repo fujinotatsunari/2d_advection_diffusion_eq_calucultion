@@ -14,6 +14,7 @@ Explicit_FEM::Explicit_FEM(Mesh2d& mesh_, Time& t_, PHI& phi_, Boundarycond& BC_
 	:mesh(mesh_), t(t_), phi(phi_), BC(BC_),ADP(adp)
 {
 
+
 }
 
 void Explicit_FEM::do_expcalculation() {

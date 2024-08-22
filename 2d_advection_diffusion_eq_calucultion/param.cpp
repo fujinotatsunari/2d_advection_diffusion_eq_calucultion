@@ -8,7 +8,7 @@ using namespace std;
 NodeP::NodeP()
 	:Lx(0), Ly(0), xb(0), xt(0), yb(0), yt(0), dx(0), dy(0), xnode(0), ynode(0), xelem(0), yelem(0), nnode(0), nelem(0)
 {
-	//cout << "NodeP()" << endl;
+	
 	setNodeParam();
 }
 NodeP::NodeP(const NodeP& Np) {
@@ -233,7 +233,7 @@ void Boundarycond::setdD(double dD_) {
 ADeq_param_2d::ADeq_param_2d(NodeP& Np, TimeP& Tp)
 	:nparam(Np),tparam(Tp)
 {
-	cout << "ADeq_param_2d(NodeP& Np, TimeP& Tp)" << endl;
+
 
 	set_param();
 }

@@ -12,6 +12,7 @@ Scalar2d::Scalar2d()
 
 }
 
+
 void Scalar2d::setNo(int no) {
 	no_ = no;
 }

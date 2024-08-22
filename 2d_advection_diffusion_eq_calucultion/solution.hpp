@@ -19,6 +19,7 @@ public:
 	Explicit_FEM(Mesh2d& mesh_, Time& t_, PHI& phi_, Boundarycond& BC_, ADeq_param_2d& adp_);
 	void output(int n);
 	void do_expcalculation();//質量集中化を用いる計算
+
 };
 
 class Implicit_FEM {//陰解法
