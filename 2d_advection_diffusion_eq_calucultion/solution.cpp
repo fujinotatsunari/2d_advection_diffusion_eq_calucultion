@@ -112,6 +112,7 @@ void Explicit_FEM::do_expcalculation() {
 				if (mesh.ncond(np) == 0) {//内部
 					phi[np] = phib[np] + t.dt() * (dd[np] + uu[np]) / ff[np];
 
+
 				}
 				else if (mesh.ncond(np) == 1) {//dirichlet境界条件
 					phi[np] = phib[np];
