@@ -8,29 +8,7 @@
 #include<vector>
 using namespace std;
 
-class Outputdata {
-private:
-	int n;
-	int scheme;
-	int Filestage;
-	vector<double> x;
-	vector<double> y;
-	vector<vector<double>> copy;
-	Mesh2d& mesh;
-	Time& t;
-	ADeq_param_2d& adp;
-	Boundarycond& BC;	
-	PHI& phi;
-	string dir;//保存場所
 
-
-public:
-	Outputdata(Mesh2d& Mesh, Time& T, PHI& phi, ADeq_param_2d& ADP, Boundarycond& BC, int Scheme);
-	Outputdata(Mesh2d& Mesh, Time& T, PHI& phi, ADeq_param_2d& ADP, Boundarycond& BC, int Scheme, int filestage, int nstep);
-	void output_result_csv(int N);//Nステップでのcsvの出力
-	void output_condition();//パラメータファイルの出力
-
-};
 class OutputData {
 private:
 	int scheme;//計算スキームのフラグ
