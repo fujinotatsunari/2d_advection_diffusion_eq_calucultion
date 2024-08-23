@@ -7,11 +7,32 @@
 #include <fstream>
 
 using namespace std;
-Outputdata::Outputdata(Mesh2d& Mesh, Time& T, PHI& Phi, ADeq_param_2d& ADP, Boundarycond& bc, int Scheme) 
-	:n(0),mesh(Mesh),t(T),phi(Phi),adp(ADP),BC(bc),scheme(Scheme)
-{
-	
+string make_directories(string str1, string str2) {
 
+	string str;
+	str = str1 + "/" + str2;
+	struct stat statBuf;
+	if (stat(str.c_str(), &statBuf) != 0) {
+		if (_mkdir(str.c_str()) == 0) {
+			// 成功
+			cout << str << "が作成されました" << endl;
+			return str;
+		}
+		else {
+			// 失敗
+			cout << str << "の作成に失敗しました" << endl;
+			exit(-1);
+		}
+	}
+	else {
+		return str;
+	}
+
+}
+OutputData::OutputData(Mesh2d& Mesh, Time& T, PHI& Phi, ADeq_param_2d& ADP, Boundarycond& Bc)
+	:mesh(Mesh), t(T), phi(Phi), adp(ADP), BC(Bc), scheme(-1), Filestage(0)
+{
+	//dir = directory_setup();
 	x.resize(mesh.xnode());
 	y.resize(mesh.ynode());
 	copy.resize(mesh.xnode());
@@ -20,7 +41,7 @@ Outputdata::Outputdata(Mesh2d& Mesh, Time& T, PHI& Phi, ADeq_param_2d& ADP, Boun
 	}
 	for (int j = 0; j < mesh.ynode(); j++) {
 		for (int i = 0; i < mesh.xnode(); i++) {
-			int np = i + mesh.xnode() * j; 
+			int np = i + mesh.xnode() * j;
 			copy[i][j] = phi[np];
 
 			if (i == 0) {
@@ -32,17 +53,93 @@ Outputdata::Outputdata(Mesh2d& Mesh, Time& T, PHI& Phi, ADeq_param_2d& ADP, Boun
 		}
 	}
 }
-void Outputdata::output_result_csv(int N) {
-	n = N;
+void OutputData::set_scheme(int Scheme) {
+	scheme = Scheme;
+}
+void OutputData::set_Filestage(int filestage) {
+	Filestage = filestage;
+}
+int OutputData::get_scheme(void) {
+	return scheme;
+}
+int OutputData::get_Filestage(void) {
+	return Filestage;
+}
+string OutputData::directory_setup(void) {
+	string dirname0 = "C:";
+	string dirname1 = "Result";
+	string dirname2 = "2d_advection_diffusion_eq_calculation";
+	string dirname3;
+	if (scheme == 0) {//陽解法
+		dirname3 = "FEM_explicit";
+	}
+	else if (scheme == 1) {//陰解法
+		dirname3 = "FEM_implicit";
+	}
+
+	string dirname4 = "result";
+	string str;
+	string str1;
+	string year;
+	string month;
+	string day;
+
+	time_t timer;
+	struct tm local_time;
+	timer = time(NULL);
+	localtime_s(&local_time, &timer);
+	struct stat statBuf;
+
+	str = make_directories(make_directories(make_directories(make_directories(dirname0, dirname1), dirname2), dirname3), dirname4);
+
+	year = to_string(local_time.tm_year + 1900);
+	month = to_string(local_time.tm_mon + 1);
+	day = to_string(local_time.tm_mday);
+
+	str1 = year + month + day;
+	str = make_directories(str, str1);//C:/..../day
+
+	int check = 0;
+	if (Filestage == 0) {//計算開始後初めて保存場所を作成
+		for (int i = 0; check == 0; i++) {
+			str1 = str + "/" + "data_" + to_string(i);//C:/../data_i
+			//cout << str1 << endl;
+			if (stat(str1.c_str(), &statBuf) != 0) {
+				//data_iがそんざいしないとき
+				str1 = "data_" + to_string(i);
+				str = make_directories(str, str1);
+				//cout << str << "を作成" <<  endl;
+				check = 1;
+				dir = str;
+				Filestage = 1;
+				return str;
+			}
+			else {
+				//data_iがそんざいするときiをインクリメント
+			}
+		}
+	}
+	else if (Filestage == 1) {//保存場所が作成済み
+
+		return dir;
+	}
+	else {
+		exit(-1);
+	}
+
+}
+void OutputData::output_result_csv(int N) {
+
 	string str;
 	string str1;
 	string str2;
 	string str3;
 
-	str1 = directories_setup(n, scheme);//C:///.../data_(i)
+	//str1 = directories_setup(n, scheme);//C:///.../data_(i)
+	str1 = directory_setup();
 	str2 = "result_csv";
 	str3 = make_directories(str1, str2);//C:/..../data_(i)/result_csv
-	str = str3 + "/" + "t = " + to_string(t.ntime(n)) + "_" + "phi.csv";
+	str = str3 + "/" + "t = " + to_string(t.ntime(N)) + "_" + "phi.csv";
 
 	ofstream outputfile(str);
 	outputfile << ",";
@@ -59,267 +156,51 @@ void Outputdata::output_result_csv(int N) {
 	}
 	outputfile.close();
 }
-string make_directories(string str1, string str2) {
-
-	string str;
-	str = str1 + "/" + str2;
-	struct stat statBuf;
-	if (stat(str.c_str(), &statBuf) != 0) {
-		if (_mkdir(str.c_str()) == 0) {
-			// 成功
-			std::cout << str << "が作成されました" << std::endl;
-			return str;
-		}
-		else {
-			// 失敗
-			std::cout << str << "の作成に失敗しました" << std::endl;
-			exit(-1);
-		}
-	}
-	else {
-
-		
-		return str;
-	}
-
-}
-string directories_setup(int n) {
-	string dirname0 = "C:";
-	string dirname1 = "Result";
-	string dirname2 = "2d_advection_diffusion_eq_calculation";
-	
-	string dirname3 = "FEM_explicit";
-	string dirname4 = "result";
+void OutputData::output_condition() {
 	string str;
 	string str1;
+	string str2;
+	string str3;
 
-	string year;
-	string month;
-	string day;
-
-	time_t timer;
-	struct tm local_time;
-	timer = time(NULL);
-	localtime_s(&local_time, &timer);
-	struct stat statBuf;
-
-	str = make_directories(make_directories(make_directories(make_directories(dirname0, dirname1), dirname2), dirname3), dirname4);
-
-	year = to_string(local_time.tm_year + 1900);
-	month = to_string(local_time.tm_mon + 1);
-	day = to_string(local_time.tm_mday);
-
-	str1 = year + month + day;
-	str = make_directories(str, str1);//C:/..../day
-
-	int check = 0;
-
-	if (n == 0) {//時間ステップが0
-		for (int i = 0; check == 0; i++) {
-			str1 = str + "/" + "data" + to_string(i);//C:/../data_i
-			if (stat(str1.c_str(), &statBuf) != 0) {
-				//str1がそんざいしないとき
-				str1 = "data" + to_string(i);
-				str = make_directories(str, str1);
-				check = 1;
-				return str;
-			}
-			else {
-				//str1がそんざいするとき
-
-			}
-
-		}
-
-	}
-	else {//時間ステップが0じゃない
-		for (int i = 0; check == 0; i++) {
-			str1 = str + "/" + "data" + to_string(i);//C:/../data_i
-			if (stat(str1.c_str(), &statBuf) != 0) {
-				//str1がそんざいしないとき
-				str1 = "data" + to_string(i);
-				str = make_directories(str, str1);
-				check = 1;
-				return str;
-			}
-			else {
-				//str1がそんざいするとき
-				int j = i + 1;
-				str1 = str + "/" + "data" + to_string(j);//C:/../data_(i+1)
-				if (stat(str1.c_str(), &statBuf) != 0) {
-					//data(i+1)が存在しない<=>dataiが最後<=>dataiへ保存
-					str1 = "data" + to_string(i);
-					str = make_directories(str, str1);
-					check = 1;
-					return str;
-				}
-				else {
-					//data(i+1)が存在
-				}
-			}
-
-		}
-	}
-
-
-}
-string directories_setup(int n, int scheme) {
-	string dirname0 = "C:";
-	string dirname1 = "Result";
-	string dirname2 = "2d_advection_diffusion_eq_calculation";
-	string dirname3;
-	if (scheme == 0) {//陽解法
-		dirname3 = "FEM_explicit";
-	}
-	else if (scheme == 1) {//陰解法
-		dirname3 = "FEM_implicit";
-	}
-	
-	string dirname4 = "result";
-	string str;
-	string str1;
-	string year;
-	string month;
-	string day;
-
-	time_t timer;
-	struct tm local_time;
-	timer = time(NULL);
-	localtime_s(&local_time, &timer);
-	struct stat statBuf;
-
-	str = make_directories(make_directories(make_directories(make_directories(dirname0, dirname1), dirname2), dirname3), dirname4);
-
-	year = to_string(local_time.tm_year + 1900);
-	month = to_string(local_time.tm_mon + 1);
-	day = to_string(local_time.tm_mday);
-
-	str1 = year + month + day;
-	str = make_directories(str, str1);//C:/..../day
-
-	int check = 0;
-
-	if (n == 0) {//時間ステップが0
-		for (int i = 0; check == 0; i++) {
-			str1 = str + "/" + "data" + to_string(i);//C:/../data_i
-			if (stat(str1.c_str(), &statBuf) != 0) {
-				//str1がそんざいしないとき
-				str1 = "data" + to_string(i);
-				str = make_directories(str, str1);
-				check = 1;
-				return str;
-			}
-			else {
-				//str1がそんざいするとき
-
-			}
-
-		}
-
-	}
-	else {//時間ステップが0じゃない
-		for (int i = 0; check == 0; i++) {
-			str1 = str + "/" + "data" + to_string(i);//C:/../data_i
-			if (stat(str1.c_str(), &statBuf) != 0) {
-				//str1がそんざいしないとき
-				str1 = "data" + to_string(i);
-				str = make_directories(str, str1);
-				check = 1;
-				return str;
-			}
-			else {
-				//str1がそんざいするとき
-				int j = i + 1;
-				str1 = str + "/" + "data" + to_string(j);//C:/../data_(i+1)
-				if (stat(str1.c_str(), &statBuf) != 0) {
-					//data(i+1)が存在しない<=>dataiが最後<=>dataiへ保存
-					str1 = "data" + to_string(i);
-					str = make_directories(str, str1);
-					check = 1;
-					return str;
-				}
-				else {
-					//data(i+1)が存在
-				}
-			}
-
-		}
-	}
-
-}
-/*
-void out_put(int n, double time, int xelem, int yelem, double* phi, double* x, double* y) {
-	int xnode = xelem + 1;
-	int ynode = yelem + 1;
-
-
-	output_csv(n, time, xelem, yelem, x, y, phi);
-	//output_inp(n, time, xelem, yelem, x, y, phi);
-
-
-
-}
-void output_csv(int n, double time, int xelem, int yelem, double* x, double* y, double* phi) {
-
-	int xnode = xelem + 1;
-	int ynode = yelem + 1;
-	double* X = new double[xnode];
-	double* Y = new double[ynode];
-	double** output_phi;
-
-
-
-	output_phi = new double* [xnode];
-	for (int i = 0; i < xnode; i++) {
-		output_phi[i] = new double[ynode];
-	}
-	for (int j = 0; j < ynode; j++) {
-		for (int i = 0; i < xnode; i++) {
-			int np = i + xnode * j; //�ߓ_�ԍ�
-
-			output_phi[i][j] = phi[np];
-			if (i == 0) {
-				Y[j] = y[np];
-			}
-			if (j == 0) {
-				X[i] = x[np];
-			}
-		}
-	}
-
-	std::string str;
-	std::string str1;//makedirectories�ŋA���Ă���p�X
-	std::string str2;
-	std::string str3;
-
-	str1 = directories_setup(n);//C:///.../data_(i)
-	str2 = "result_csv";
-	str3 = make_directories(str1, str2);//C:/..../data_(i)/result_csv
-	str = str3 + "/" + "t = " + to_string(time) + "_" + "phi.csv";
+	//str1 = directories_setup(n, scheme);//C:///.../data_(i)
+	str1 = directory_setup();
+	str2 = "condition";
+	str3 = make_directories(str1, str2);//C:/..../data_(i)/condition
+	str = str3 + "/" + "condition.txt";
 
 	ofstream outputfile(str);
-	outputfile << ",";
-	for (int i = 0; i < xnode; i++) {
-		outputfile << X[i] << ",";
-	}
+	outputfile << "#calculation_condition" << "\n";
+	outputfile << "##mesh_parameter" << "\n";
+	outputfile << "xb=" << mesh.xb() << " " << "xt=" << mesh.xt() << "\n";
+	outputfile << "yb=" << mesh.yb() << " " << "yt=" << mesh.yt() << "\n";
+	outputfile << "dx=" << mesh.dx() << " " << "dy=" << mesh.dy() << "\n";
+	outputfile << "xelem=" << mesh.xelem() << " " << "yelem=" << mesh.yelem() << "\n";
+	outputfile << "nelem=" << mesh.nelem() << " " << "nnode=" << mesh.nnode() << "\n";
 	outputfile << "\n";
-	for (int j = 0; j < ynode; j++) {
-		outputfile << Y[j] << ",";
-		for (int i = 0; i < xnode; i++) {
-			outputfile << output_phi[i][j] << ",";
-		}
-		outputfile << "\n";
-	}
+	outputfile << "##time_parameter" << "\n";
+	outputfile << "dt=" << t.dt() << "\n";
+	outputfile << "nend=" << t.nend() << "\n";
+	outputfile << "nsample=" << t.nsample() << "\n";
+	outputfile << "\n";
+	outputfile << "##equation_parameter" << "\n";
+	outputfile << "x方向定常流速 cx=" << adp.get_cx() << " " << "y方向定常流速 cy=" << adp.get_cy() << "\n";
+	outputfile << "拡散係数 alpha=" << adp.get_alpha() << "\n";
+	outputfile << "x方向courant数" << adp.get_couranx() << " " << "y方向courant数" << adp.get_courany() << "\n";
+	outputfile << "拡散数" << adp.get_diffusion() << " " << "Peclet数" << adp.get_Pe() << "\n";
 	outputfile.close();
-
-
-	delete[] X;
-	delete[] Y;
-	for (int i = 0; i < xnode; i++) {
-		delete[] output_phi[i];
-	}
-
 }
+string OutputData::get_dir() {
+	return dir;
+}
+void OutputData::data_update(PHI& Phi) {
+	for (int j = 0; j < mesh.ynode(); j++) {
+		for (int i = 0; i < mesh.xnode(); i++) {
+			int np = i + mesh.xnode() * j;
+			copy[i][j] = Phi[np];
+		}
+	}
+}
+/*
 
 void output_inp(int n, double time, int xelement, int yelement, double* x, double* y, double* phi) {
 	int xnode = xelement + 1;

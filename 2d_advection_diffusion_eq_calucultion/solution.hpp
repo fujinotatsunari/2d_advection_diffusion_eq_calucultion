@@ -14,10 +14,11 @@ private:
 	Time& t;
 	PHI& phi;
 	ADeq_param_2d& ADP;
+
 	int node = 4;
 public:
 	Explicit_FEM(Mesh2d& mesh_, Time& t_, PHI& phi_, Boundarycond& BC_, ADeq_param_2d& adp_);
-	void output(int n);
+	
 	void do_expcalculation();//質量集中化を用いる計算
 
 };
@@ -37,7 +38,7 @@ private:
 	//vector<double> x;
 public:
 	Implicit_FEM(Mesh2d& mesh_, Time& t_, PHI& phi_, Boundarycond& BC_, ADeq_param_2d& adp_);
-	void output(int n);
+
 	void do_impcaluculation();//陰解法
 
 };

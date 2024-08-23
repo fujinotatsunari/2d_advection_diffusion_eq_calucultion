@@ -10,11 +10,10 @@
 
 using namespace std;
 
-Explicit_FEM::Explicit_FEM(Mesh2d& mesh_, Time& t_, PHI& phi_, Boundarycond& BC_, ADeq_param_2d& adp)
-	:mesh(mesh_), t(t_), phi(phi_), BC(BC_),ADP(adp)
+Explicit_FEM::Explicit_FEM(Mesh2d& mesh_, Time& t_, PHI& phi_, Boundarycond& BC_, ADeq_param_2d& adp_)
+	:mesh(mesh_), t(t_), phi(phi_), BC(BC_), ADP(adp_)
 {
-
-
+	
 }
 
 void Explicit_FEM::do_expcalculation() {
@@ -23,6 +22,13 @@ void Explicit_FEM::do_expcalculation() {
 	xAdvecmatrix Amx(mesh);//移流行列x方向
 	yAdvecmatrix Amy(mesh);//移流行列y方向
 	Diffmatrix Dm(mesh);//拡散行列
+	OutputData out(mesh, t, phi, ADP, BC);
+	out.set_scheme(0);//陽解法をset
+	out.set_Filestage(0);
+	out.directory_setup();
+	//cout << out.get_dir() << endl;
+	//cout << out.get_Filestage() << endl;
+	//cout << out.get_dir() << endl;
 	/*
 	cout << "viewFm" << endl;
 	Fm.view();
@@ -72,7 +78,7 @@ void Explicit_FEM::do_expcalculation() {
 
 	//時間進行
 	for (int n = 0; n <= t.nend(); n++) {
-		output(n);
+	
 
 		cout << "time=" << t.ntime(n) << endl;
 		for (int j = 0; j < mesh.ynode(); j++) {
@@ -129,15 +135,17 @@ void Explicit_FEM::do_expcalculation() {
 				//cout << "phi[" << np << "]=" << phi[np] << endl;
 			}
 		}
+		if (n == 0) {
+			out.output_condition();
+		}
+		if (n % t.nsample() == 0) {
+			out.data_update(phi);
+			out.output_result_csv(n);
+		}
 	}
 }
 
-void Explicit_FEM::output(int n) {
-	if (n % t.nsample() == 0) {
-		Outputdata output(mesh, t, phi, ADP, BC, 0);
-		output.output_result_csv(n);
-	}
-}
+
 Implicit_FEM::Implicit_FEM(Mesh2d& mesh_, Time& t_, PHI& phi_, Boundarycond& BC_, ADeq_param_2d& adp_)
 	:mesh(mesh_), t(t_), phi(phi_), BC(BC_), ADP(adp_)
 {
@@ -150,6 +158,11 @@ void Implicit_FEM::do_impcaluculation() {
 	yAdvecmatrix Amy(mesh);//移流行列y方向
 	Diffmatrix Dm(mesh);//拡散行列
 	int Nnode = mesh.nnode();
+	OutputData out(mesh, t, phi, ADP, BC);
+	out.set_scheme(1);//陰解法をset
+	out.set_Filestage(0);
+	out.directory_setup();
+
 
 	vector<vector<double>> A;
 	A.resize(Nnode);
@@ -159,10 +172,7 @@ void Implicit_FEM::do_impcaluculation() {
 	vector<double> b;
 	b.resize(mesh.nnode());
 	vector<double> x;
-	
 	x.resize(mesh.nnode());
-
-	
 
 	vector<double> nn;//境界項足し込み変数
 	nn.resize(mesh.nnode());
@@ -194,8 +204,8 @@ void Implicit_FEM::do_impcaluculation() {
 	}
 
 	cout << "time=" << t.ntime(0) << endl;
-	output(0);
-
+	out.output_condition();
+	out.output_result_csv(0);
 	//時間進行
 	for (int n = 1; n <= t.nend(); n++) {
 		cout << "time=" << t.ntime(n) << endl;
@@ -240,14 +250,11 @@ void Implicit_FEM::do_impcaluculation() {
 		for (int i = 0; i < x.size(); i++) {
 			phi[i] = x[i];
 		}
-		output(n);
+		if (n % t.nsample() == 0) {
+			out.data_update(phi);
+			out.output_result_csv(n);
+		}
 
 	}
 
-}
-void Implicit_FEM::output(int n) {
-	if (n % t.nsample() == 0) {
-		Outputdata output(mesh, t, phi, ADP, BC, 1);
-		output.output_result_csv(n);
-	}
 }
